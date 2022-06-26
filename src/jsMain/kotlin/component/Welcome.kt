@@ -1,3 +1,5 @@
+package component
+
 import csstype.px
 import csstype.rgb
 import react.FC
