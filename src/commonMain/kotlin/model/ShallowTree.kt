@@ -1,7 +1,7 @@
 package model
 
-data class ShallowPriorityTree(
+data class ShallowTree(
     override val id: String,
     override val node: Node,
     override val childIds: Set<String>
-) : PriorityTree
+) : Tree
