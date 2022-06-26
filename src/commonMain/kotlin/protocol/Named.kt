@@ -1,4 +1,4 @@
-package ry.protocol
+package protocol
 
 interface Named {
 

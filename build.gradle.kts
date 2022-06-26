@@ -3,7 +3,7 @@ plugins {
     application
 }
 
-group = "me.ry"
+group = "ry"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -57,7 +57,7 @@ kotlin {
 }
 
 application {
-    mainClass.set("me.ry.application.ServerKt")
+    mainClass.set("ry.prioritizer.ServerKt")
 }
 
 tasks.named<Copy>("jvmProcessResources") {

@@ -1,7 +1,7 @@
-package ry.model
+package model
 
-import ry.protocol.Identifiable
-import ry.protocol.Named
+import protocol.Identifiable
+import protocol.Named
 
 data class Node(
     override val id: String,

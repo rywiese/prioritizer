@@ -1,4 +1,4 @@
-package ry.model
+package model
 
 data class ShallowPriorityTree(
     override val id: String,
