@@ -1,4 +1,4 @@
-package me.ry.application
+package ry.prioritizer
 
 import io.ktor.application.call
 import io.ktor.html.respondHtml

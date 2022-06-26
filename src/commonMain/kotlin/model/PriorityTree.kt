@@ -1,6 +1,6 @@
-package ry.model
+package model
 
-import ry.protocol.Identifiable
+import protocol.Identifiable
 
 interface PriorityTree : Identifiable {
 
