@@ -3,7 +3,9 @@ package component
 import csstype.Display
 import csstype.FlexDirection
 import csstype.FlexGrow
+import csstype.JustifyContent
 import csstype.pct
+import csstype.px
 import model.Tree
 import react.FC
 import react.Props
@@ -17,14 +19,16 @@ external interface ChildrenProps : Props {
 val Children = FC { props: ChildrenProps ->
     div {
         css {
-            height = 100.pct
             display = Display.flex
             flexDirection = FlexDirection.column
+            justifyContent = JustifyContent.center
+            height = 100.pct
         }
         props.children.map { child: Tree ->
             div {
                 css {
                     flexGrow = FlexGrow(1.0)
+                    padding = 25.px
                 }
                 Child {
                     childId = child.id
