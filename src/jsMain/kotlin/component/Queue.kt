@@ -16,7 +16,7 @@ external interface QueueProps : Props {
     var items: List<Item>
 }
 
-val Queue = FC<QueueProps> { props: QueueProps ->
+val Queue = FC { props: QueueProps ->
     div {
         css {
             display = Display.flex

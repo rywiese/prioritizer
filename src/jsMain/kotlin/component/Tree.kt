@@ -3,8 +3,6 @@ package component
 import csstype.Display
 import csstype.FlexDirection
 import csstype.FlexGrow
-import csstype.JustifyContent
-import csstype.TextAlign
 import csstype.vh
 import model.DeepTree
 import react.FC
