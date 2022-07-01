@@ -3,6 +3,7 @@ package component
 import csstype.Display
 import csstype.FlexDirection
 import csstype.FlexGrow
+import csstype.vh
 import model.DeepTree
 import react.FC
 import react.Props
@@ -13,9 +14,10 @@ external interface TreeProps : Props {
     var tree: DeepTree
 }
 
-val Tree = FC<TreeProps> { props: TreeProps ->
+val Tree = FC { props: TreeProps ->
     div {
         css {
+            height = 100.vh
             display = Display.flex
             flexDirection = FlexDirection.row
         }

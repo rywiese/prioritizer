@@ -1,5 +1,4 @@
 import component.Tree
-import component.Welcome
 import kotlinx.browser.document
 import react.create
 import react.dom.render
