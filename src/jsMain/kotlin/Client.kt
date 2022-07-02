@@ -8,7 +8,7 @@ fun main() {
     document.body!!.appendChild(container)
 
     val treeComponent = Tree.create {
-        tree = tree4
+        tree = budget
     }
     render(treeComponent, container)
 }

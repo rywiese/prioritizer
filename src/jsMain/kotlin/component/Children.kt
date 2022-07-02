@@ -32,7 +32,7 @@ val Children = FC { props: ChildrenProps ->
                 }
                 Child {
                     childId = child.id
-                    node = child.node
+                    name = child.name
                     firstItemOrNull = child.queue.firstOrNull()
                 }
             }

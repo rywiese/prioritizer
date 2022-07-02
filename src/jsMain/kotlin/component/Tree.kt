@@ -25,9 +25,7 @@ val Tree = FC { props: TreeProps ->
             css {
                 flexGrow = FlexGrow(1.0)
             }
-            Node {
-                node = props.tree.node
-            }
+            +props.tree.name
         }
         div {
             css {

@@ -24,7 +24,7 @@ val Queue = FC { props: QueueProps ->
             justifyContent = JustifyContent.center
             height = 100.pct
         }
-        props.items.map { itemProp: Item ->
+        props.items.takeIf(List<*>::isNotEmpty)?.map { itemProp: Item ->
             div {
                 css {
                     flexGrow = FlexGrow(1.0)
@@ -34,6 +34,6 @@ val Queue = FC { props: QueueProps ->
                     item = itemProp
                 }
             }
-        }
+        } ?: div { +"Nothing here yet!" }
     }
 }

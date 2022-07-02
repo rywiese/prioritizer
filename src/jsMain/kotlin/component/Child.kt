@@ -8,13 +8,13 @@ import react.dom.html.ReactHTML.div
 
 external interface ChildProps : Props {
     var childId: String
-    var node: Node
+    var name: String
     var firstItemOrNull: Item?
 }
 
 val Child = FC<ChildProps> { props: ChildProps ->
-    Node {
-        node = props.node
+    div {
+        +props.name
     }
     props.firstItemOrNull?.let { firstItem: Item ->
         Item {
