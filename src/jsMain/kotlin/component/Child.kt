@@ -1,7 +1,6 @@
 package component
 
 import model.Item
-import model.Node
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div

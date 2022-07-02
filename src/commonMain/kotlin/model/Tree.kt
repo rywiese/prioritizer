@@ -1,10 +1,9 @@
 package model
 
 import protocol.Identifiable
+import protocol.Named
 
-interface Tree : Identifiable {
-
-    val name: String
+interface Tree : Identifiable, Named {
 
     val queue: List<Item>
 

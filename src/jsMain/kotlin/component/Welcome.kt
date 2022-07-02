@@ -14,7 +14,7 @@ external interface WelcomeProps : Props {
     var name: String
 }
 
-val Welcome = FC<WelcomeProps> { props ->
+val Welcome = FC { props: WelcomeProps ->
     var name by useState(props.name)
     div {
         css {
