@@ -1,27 +1,47 @@
 package component
 
-import model.Tree
+import csstype.Display
+import csstype.FlexDirection
+import csstype.FlexGrow
+import csstype.vh
+import model.DeepTree
 import react.FC
 import react.Props
+import react.css.css
 import react.dom.html.ReactHTML.div
 
 external interface TreeProps : Props {
-    var tree: Tree
+    var tree: DeepTree
 }
 
-val Tree = FC<TreeProps> { props: TreeProps ->
+val Tree = FC { props: TreeProps ->
     div {
-        +props.tree.id
-    }
-    Node {
-        node = props.tree.node
-    }
-    Queue {
-        items = props.tree.queue
-    }
-    props.tree.childIds.map { childIdProp: String ->
-        Child {
-            childId = childIdProp
+        css {
+            display = Display.flex
+            flexDirection = FlexDirection.row
+            height = 100.vh
+        }
+        div {
+            css {
+                flexGrow = FlexGrow(1.0)
+            }
+            +props.tree.name
+        }
+        div {
+            css {
+                flexGrow = FlexGrow(4.0)
+            }
+            Queue {
+                items = props.tree.queue
+            }
+        }
+        div {
+            css {
+                flexGrow = FlexGrow(1.0)
+            }
+            Children {
+                children = props.tree.children
+            }
         }
     }
 }

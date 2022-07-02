@@ -6,17 +6,17 @@ import csstype.FlexGrow
 import csstype.JustifyContent
 import csstype.pct
 import csstype.px
-import model.Item
+import model.Tree
 import react.FC
 import react.Props
 import react.css.css
 import react.dom.html.ReactHTML.div
 
-external interface QueueProps : Props {
-    var items: List<Item>
+external interface ChildrenProps : Props {
+    var children: Set<Tree>
 }
 
-val Queue = FC { props: QueueProps ->
+val Children = FC { props: ChildrenProps ->
     div {
         css {
             display = Display.flex
@@ -24,16 +24,18 @@ val Queue = FC { props: QueueProps ->
             justifyContent = JustifyContent.center
             height = 100.pct
         }
-        props.items.takeIf(List<*>::isNotEmpty)?.map { itemProp: Item ->
+        props.children.map { child: Tree ->
             div {
                 css {
                     flexGrow = FlexGrow(1.0)
                     padding = 25.px
                 }
-                Item {
-                    item = itemProp
+                Child {
+                    childId = child.id
+                    name = child.name
+                    firstItemOrNull = child.queue.firstOrNull()
                 }
             }
-        } ?: div { +"Nothing here yet!" }
+        }
     }
 }
