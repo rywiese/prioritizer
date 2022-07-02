@@ -2,7 +2,7 @@ package model
 
 data class DeepTree(
     override val id: String,
-    override val node: Node,
+    override val name: String,
     override val queue: List<Item>,
     val children: Set<Tree>
 ) : Tree {

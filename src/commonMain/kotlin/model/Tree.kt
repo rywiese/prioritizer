@@ -4,7 +4,7 @@ import protocol.Identifiable
 
 interface Tree : Identifiable {
 
-    val node: Node
+    val name: String
 
     val queue: List<Item>
 

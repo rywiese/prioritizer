@@ -1,114 +1,97 @@
 import model.DeepTree
 import model.Item
-import model.Node
+import model.ShallowTree
 
-val item1 = Item(
-    id = "item::1",
-    name = "Item 1",
-    price = 3.98,
-    link = "http://amazon.com/item1"
-)
-
-val item2 = Item(
-    id = "item::2",
-    name = "Item 2",
-    price = 43.45,
-    link = "http://target.com/item2"
-)
-
-val item3 = Item(
-    id = "item::3",
-    name = "Item 3",
-    price = 948.21,
-    link = "http://bestbuy.com/item3"
-)
-
-val item4 = Item(
-    id = "item::4",
-    name = "Item 4",
-    price = 4.12,
-    link = "http://amazon.com/item4"
-)
-
-val item5 = Item(
-    id = "item::5",
-    name = "Item 5",
-    price = 16.73,
-    link = "http://target.com/item5"
-)
-
-val item6 = Item(
-    id = "item::6",
-    name = "Item 6",
-    price = 85.21,
-    link = "http://bestbuy.com/item6"
-)
-
-val item7 = Item(
-    id = "item::7",
-    name = "Item 7",
-    price = 16.73,
-    link = "http://target.com/item7"
-)
-
-val item8 = Item(
-    id = "item::8",
-    name = "Item 8",
-    price = 85.21,
-    link = "http://bestbuy.com/item8"
-)
-
-val tree1 = DeepTree(
-    id = "tree::1",
-    node = Node(
-        id = "node::1",
-        name = "Tree 1"
-    ),
-    queue = listOf(
-        item1,
-        item2,
-        item3,
-        item4
-    ),
-    children = emptySet()
-)
-
-val tree2 = DeepTree(
-    id = "tree::2",
-    node = Node(
-        id = "node::2",
-        name = "Tree 2"
-    ),
+val shallowBudget = ShallowTree(
+    id = "newTree",
+    name = "Budget",
     queue = emptyList(),
-    children = emptySet()
+    childIds = setOf(
+        "food",
+        "clothes"
+    )
 )
 
-val tree3 = DeepTree(
-    id = "tree::3",
-    node = Node(
-        id = "node::3",
-        name = "Tree 3"
-    ),
-    queue = listOf(
-        item5,
-        item6
-    ),
-    children = emptySet()
-)
-
-val tree4 = DeepTree(
-    id = "tree::4",
-    node = Node(
-        id = "node::4",
-        name = "Tree 4"
-    ),
-    queue = listOf(
-        item7,
-        item8
-    ),
+val budget = DeepTree(
+    id = "newTree",
+    name = "Budget",
+    queue = emptyList(),
     children = setOf(
-        tree1,
-        tree2,
-        tree3
+        DeepTree(
+            id = "food",
+            name = "Food",
+            queue = listOf(
+                Item(
+                    id = "huel",
+                    name = "Huel",
+                    price = 20.0,
+                    link = "https://huel.com"
+                ),
+                Item(
+                    id = "coconutMilk",
+                    name = "Coconut Milk",
+                    price = 1.29,
+                    link = "https://cub.com/coconutmilk"
+                ),
+                Item(
+                    id = "rice",
+                    name = "Rice",
+                    price = .97,
+                    link = "https://cub.com/rice"
+                )
+            ),
+            children = emptySet()
+        ),
+        DeepTree(
+            id = "clothes",
+            name = "Clothes",
+            queue = emptyList(),
+            children = setOf(
+                DeepTree(
+                    id = "shoes",
+                    name = "Shoes",
+                    queue = listOf(
+                        Item(
+                            id = "flipFlops",
+                            name = "Flip Flops",
+                            price = 10.0,
+                            link = "https://target.com/flipflops"
+                        ),
+                        Item(
+                            id = "vans",
+                            name = "Vans",
+                            price = 50.0,
+                            link = "https://journeys.com/vans"
+                        ),
+                        Item(
+                            id = "rudyGiulianis",
+                            name = "Rudy Giuilianis",
+                            price = 49.95,
+                            link = "https://mypillow.com/rudygs"
+                        )
+                    ),
+                    children = emptySet()
+                ),
+                DeepTree(
+                    id = "socks",
+                    name = "Socks",
+                    queue = listOf(
+                        Item(
+                            id = "adidas",
+                            name = "Adidas",
+                            price = 15.0,
+                            link = "https://adidas.com/socks"
+                        ),
+                        Item(
+                            id = "nike",
+                            name = "Nike",
+                            price = 20.0,
+                            link = "https://nike.com/socks"
+                        )
+                    ),
+                    children = emptySet()
+                )
+            )
+        )
     )
 )
