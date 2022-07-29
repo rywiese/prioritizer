@@ -12,6 +12,7 @@ import react.dom.html.ReactHTML.div
 
 external interface TreeProps : Props {
     var tree: DeepTree
+    var onClickChild: (childId: String) -> Unit
 }
 
 val Tree = FC { props: TreeProps ->
@@ -41,6 +42,7 @@ val Tree = FC { props: TreeProps ->
             }
             Children {
                 children = props.tree.children
+                onClickChild = props.onClickChild
             }
         }
     }

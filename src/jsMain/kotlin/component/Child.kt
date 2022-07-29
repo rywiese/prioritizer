@@ -1,20 +1,20 @@
 package component
 
 import model.Item
-import model.Node
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
 
 external interface ChildProps : Props {
-    var childId: String
     var name: String
     var firstItemOrNull: Item?
+    var onClick: () -> Unit
 }
 
-val Child = FC<ChildProps> { props: ChildProps ->
+val Child = FC { props: ChildProps ->
     div {
         +props.name
+        onClick = { props.onClick() }
     }
     props.firstItemOrNull?.let { firstItem: Item ->
         Item {

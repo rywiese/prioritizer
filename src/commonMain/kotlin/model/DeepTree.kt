@@ -4,7 +4,7 @@ data class DeepTree(
     override val id: String,
     override val name: String,
     override val queue: List<Item>,
-    val children: Set<Tree>
+    val children: Set<DeepTree>
 ) : Tree {
 
     override val childIds: Set<String> =
