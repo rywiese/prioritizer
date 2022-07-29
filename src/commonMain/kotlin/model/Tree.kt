@@ -8,6 +8,8 @@ interface Tree : Identifiable {
 
     val queue: List<Item>
 
+    val parentId: String?
+
     val childIds: Set<String>
 
 }

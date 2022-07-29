@@ -13,6 +13,7 @@ import react.dom.html.ReactHTML.div
 external interface TreeProps : Props {
     var tree: DeepTree
     var onClickChild: (childId: String) -> Unit
+    var onClickParent: (parentId: String) -> Unit
 }
 
 val Tree = FC { props: TreeProps ->
@@ -26,12 +27,23 @@ val Tree = FC { props: TreeProps ->
             css {
                 flexGrow = FlexGrow(1.0)
             }
-            +props.tree.name
+            props.tree.parentId?.let { parentId: String ->
+                Parent {
+                    name = parentId
+                    onClick = {
+                        props.onClickParent(parentId)
+                    }
+                }
+            } ?: Parent {
+                name = "Root"
+                onClick = { }
+            }
         }
         div {
             css {
                 flexGrow = FlexGrow(4.0)
             }
+            +props.tree.name
             Queue {
                 items = props.tree.queue
             }

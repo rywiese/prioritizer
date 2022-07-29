@@ -22,5 +22,8 @@ val Top = FC { props: TopProps ->
                     statefulTree = child
                 }
         }
+        onClickParent = { parentId: String ->
+            statefulTree = props.initialTree.subTree(parentId)!!
+        }
     }
 }

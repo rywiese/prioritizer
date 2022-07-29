@@ -6,6 +6,7 @@ val shallowBudget = ShallowTree(
     id = "newTree",
     name = "Budget",
     queue = emptyList(),
+    parentId = null,
     childIds = setOf(
         "food",
         "clothes"
@@ -16,6 +17,7 @@ val budget = DeepTree(
     id = "newTree",
     name = "Budget",
     queue = emptyList(),
+    parentId = null,
     children = setOf(
         DeepTree(
             id = "food",
@@ -40,12 +42,14 @@ val budget = DeepTree(
                     link = "https://cub.com/rice"
                 )
             ),
+            parentId = "newTree",
             children = emptySet()
         ),
         DeepTree(
             id = "clothes",
             name = "Clothes",
             queue = emptyList(),
+            parentId = "newTree",
             children = setOf(
                 DeepTree(
                     id = "shoes",
@@ -70,6 +74,7 @@ val budget = DeepTree(
                             link = "https://mypillow.com/rudygs"
                         )
                     ),
+                    parentId = "clothes",
                     children = emptySet()
                 ),
                 DeepTree(
@@ -89,6 +94,7 @@ val budget = DeepTree(
                             link = "https://nike.com/socks"
                         )
                     ),
+                    parentId = "clothes",
                     children = emptySet()
                 )
             )
