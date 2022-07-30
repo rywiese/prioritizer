@@ -4,7 +4,7 @@ import model.DeepTree
 import model.Item
 import model.Tree
 
-class MockTreeApi : TreeApi {
+object MockTreeApi : TreeApi {
 
     override suspend fun getRoot(
         treeDepth: Int,
@@ -25,7 +25,7 @@ class MockTreeApi : TreeApi {
             .subTree(treeId)
             ?.limitDepth(treeDepth)
 
-    val budget = DeepTree(
+    private val budget = DeepTree(
         id = "newTree",
         name = "Budget",
         queue = emptyList(),

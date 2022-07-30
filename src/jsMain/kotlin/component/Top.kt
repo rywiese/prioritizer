@@ -1,9 +1,10 @@
 package component
 
 import api.TreeApi
+import client.TreeClient
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import model.DeepTree
+import model.Depth1Tree
 import model.Tree
 import react.FC
 import react.Props
@@ -12,7 +13,8 @@ import react.useEffectOnce
 import react.useState
 
 external interface TopProps : Props {
-    var api: TreeApi
+    var treeApi: TreeApi
+    var treeClient: TreeClient
 }
 
 val mainScope = MainScope()
@@ -22,13 +24,12 @@ val Top = FC { props: TopProps ->
     var statefulChildren: Set<Tree> by useState(emptySet())
     useEffectOnce {
         mainScope.launch {
-            val root: Tree = props.api.getRoot(
-                treeDepth = 1,
-                queueLength = -1
-            )!!
-            require(root is DeepTree)
-            statefulTree = root
-            statefulChildren = root.children
+            props.treeClient
+                .getRootDepth1()
+                ?.also { root: Depth1Tree ->
+                    statefulTree = root
+                    statefulChildren = root.children
+                }
         }
     }
     statefulTree?.let {
@@ -37,26 +38,26 @@ val Top = FC { props: TopProps ->
             children = statefulChildren
             onClickChild = { childId: String ->
                 mainScope.launch {
-                    val child: Tree = props.api.getTree(
-                        treeId = childId,
-                        treeDepth = 1,
-                        queueLength = -1
-                    )!!
-                    require(child is DeepTree)
-                    statefulTree = child
-                    statefulChildren = child.children
+                    props.treeClient
+                        .getTreeDepth1(
+                            treeId = childId
+                        )
+                        ?.also { childId: Depth1Tree ->
+                            statefulTree = childId
+                            statefulChildren = childId.children
+                        }
                 }
             }
             onClickParent = { parentId: String ->
                 mainScope.launch {
-                    val parent: Tree = props.api.getTree(
-                        treeId = parentId,
-                        treeDepth = 1,
-                        queueLength = -1
-                    )!!
-                    require(parent is DeepTree)
-                    statefulTree = parent
-                    statefulChildren = parent.children
+                    props.treeClient
+                        .getTreeDepth1(
+                            treeId = parentId
+                        )
+                        ?.also { parent: Depth1Tree ->
+                            statefulTree = parent
+                            statefulChildren = parent.children
+                        }
                 }
             }
         }
