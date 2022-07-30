@@ -12,6 +12,16 @@ data class ShallowTree(
 
     override fun limitDepth(depth: Int): Tree = this
 
+    override fun pop(): Pair<Tree, Item?> {
+        val item: Item? = queue.firstOrNull()
+        val tree: Tree = if (item == null) this else copy(
+            queue = queue.drop(1)
+        )
+        return tree to item
+    }
+
+    override fun promote(childId: String): Tree = this
+
     constructor(
         tree: Tree
     ) : this(

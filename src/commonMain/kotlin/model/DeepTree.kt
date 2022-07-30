@@ -11,29 +11,24 @@ data class DeepTree(
     override val childIds: Set<String> =
         children.map(Tree::id).toSet()
 
-    fun toShallowTree(): ShallowTree =
-        ShallowTree(
-            id = id,
-            name = name,
-            queue = queue,
-            parentId = parentId,
-            childIds = childIds
-        )
-
     /**
      * @return the subtree of `this` tree whose [Tree::id] is [childId],
      * or `null` if none is found.
      */
-    override fun subTree(childId: String): Tree? =
+    override fun subTree(
+        childId: String
+    ): Tree? =
         takeIf { this.id == childId }
             ?: children.firstNotNullOfOrNull { child: Tree ->
                 child.subTree(childId)
             }
 
-    override fun limitDepth(depth: Int): Tree =
+    override fun limitDepth(
+        depth: Int
+    ): Tree =
         when {
             children.isEmpty() -> this
-            depth <= 0 -> toShallowTree()
+            depth <= 0 -> ShallowTree(this)
             else -> copy(
                 children = children
                     .map { child: Tree ->
@@ -42,5 +37,29 @@ data class DeepTree(
                     .toSet()
             )
         }
+
+    override fun pop(): Pair<DeepTree, Item?> {
+        val item: Item? = queue.firstOrNull()
+        val tree: DeepTree = if (item == null) this else copy(
+            queue = queue.drop(1)
+        )
+        return tree to item
+    }
+
+    override fun promote(
+        childId: String
+    ): Tree {
+        val oldChild: Tree? = children.find { it.id == childId }
+        return oldChild?.pop()
+            ?.let { (newChild: Tree, item: Item?) ->
+                if (item == null)
+                    this
+                else copy(
+                    queue = queue + item,
+                    children = children - oldChild + newChild
+                )
+            }
+            ?: this
+    }
 
 }

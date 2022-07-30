@@ -8,6 +8,7 @@ import react.dom.html.ReactHTML.p
 
 external interface ItemProps : Props {
     var item: Item
+    var onClick: () -> Unit
 }
 
 val Item = FC<ItemProps> { props: ItemProps ->
@@ -21,5 +22,6 @@ val Item = FC<ItemProps> { props: ItemProps ->
         p {
             +"Link: ${props.item.link}"
         }
+        onClick = { props.onClick() }
     }
 }

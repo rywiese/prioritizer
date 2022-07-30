@@ -20,4 +20,11 @@ interface TreeApi {
         queueLength: Int
     ): Tree?
 
+    suspend fun promote(
+        treeId: String,
+        childId: String,
+        treeDepth: Int,
+        queueLength: Int
+    ): Tree?
+
 }

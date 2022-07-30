@@ -24,40 +24,41 @@ val Top = FC { props: TopProps ->
     var statefulChildren: Set<Tree> by useState(emptySet())
     useEffectOnce {
         mainScope.launch {
-            props.treeClient
-                .getRootDepth1()
-                ?.also { root: Depth1Tree ->
-                    statefulTree = root
-                    statefulChildren = root.children
-                }
+            props.treeClient.getRoot { root: Depth1Tree ->
+                statefulTree = root
+                statefulChildren = root.children.sortedBy { it.name }.toSet()
+            }
         }
     }
     statefulTree?.let {
         Tree {
             tree = it
             children = statefulChildren
-            onClickChild = { childId: String ->
-                mainScope.launch {
-                    props.treeClient
-                        .getTreeDepth1(
-                            treeId = childId
-                        )
-                        ?.also { childId: Depth1Tree ->
-                            statefulTree = childId
-                            statefulChildren = childId.children
-                        }
-                }
-            }
             onClickParent = { parentId: String ->
                 mainScope.launch {
-                    props.treeClient
-                        .getTreeDepth1(
-                            treeId = parentId
-                        )
-                        ?.also { parent: Depth1Tree ->
-                            statefulTree = parent
-                            statefulChildren = parent.children
-                        }
+                    props.treeClient.getTree(parentId) { parent: Depth1Tree ->
+                        statefulTree = parent
+                        statefulChildren = parent.children.sortedBy { it.name }.toSet()
+                    }
+                }
+            }
+            onClickChild = { child: Tree ->
+                mainScope.launch {
+                    props.treeClient.getTree(child.id) { childId: Depth1Tree ->
+                        statefulTree = childId
+                        statefulChildren = childId.children.sortedBy { it.name }.toSet()
+                    }
+                }
+            }
+            onClickChildItem = { child: Tree ->
+                mainScope.launch {
+                    props.treeClient.promote(
+                        treeId = child.parentId!!,
+                        childId = child.id
+                    ) { tree: Depth1Tree ->
+                        statefulTree = tree
+                        statefulChildren = tree.children.sortedBy { it.name }.toSet()
+                    }
                 }
             }
         }

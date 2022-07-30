@@ -32,6 +32,7 @@ val Queue = FC { props: QueueProps ->
                 }
                 Item {
                     item = itemProp
+                    onClick = {}
                 }
             }
         } ?: div { +"Nothing here yet!" }

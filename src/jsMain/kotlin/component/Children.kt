@@ -14,7 +14,8 @@ import react.dom.html.ReactHTML.div
 
 external interface ChildrenProps : Props {
     var children: Set<Tree>
-    var onClickChild: (childId: String) -> Unit
+    var onClickChild: (child: Tree) -> Unit
+    var onClickChildItem: (child: Tree) -> Unit
 }
 
 val Children = FC { props: ChildrenProps ->
@@ -34,7 +35,8 @@ val Children = FC { props: ChildrenProps ->
                 Child {
                     name = child.name
                     firstItemOrNull = child.queue.firstOrNull()
-                    onClick = { props.onClickChild(child.id) }
+                    onClickChild = { props.onClickChild(child) }
+                    onClickItem = { props.onClickChildItem(child) }
                 }
             }
         }

@@ -13,8 +13,9 @@ import react.dom.html.ReactHTML.div
 external interface TreeProps : Props {
     var tree: Tree
     var children: Set<Tree>
-    var onClickChild: (childId: String) -> Unit
     var onClickParent: (parentId: String) -> Unit
+    var onClickChild: (child: Tree) -> Unit
+    var onClickChildItem: (child: Tree) -> Unit
 }
 
 val Tree = FC { props: TreeProps ->
@@ -56,6 +57,7 @@ val Tree = FC { props: TreeProps ->
             Children {
                 children = props.children
                 onClickChild = props.onClickChild
+                onClickChildItem = props.onClickChildItem
             }
         }
     }

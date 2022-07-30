@@ -25,6 +25,17 @@ object MockTreeApi : TreeApi {
             .subTree(treeId)
             ?.limitDepth(treeDepth)
 
+    override suspend fun promote(
+        treeId: String,
+        childId: String,
+        treeDepth: Int,
+        queueLength: Int
+    ): Tree? =
+        budget
+            .subTree(treeId)
+            ?.promote(childId)
+            ?.limitDepth(treeDepth)
+
     private val budget = DeepTree(
         id = "newTree",
         name = "Budget",

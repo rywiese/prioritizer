@@ -15,4 +15,8 @@ interface Tree : Identifiable, Named {
 
     fun limitDepth(depth: Int): Tree
 
+    fun pop(): Pair<Tree, Item?>
+
+    fun promote(childId: String): Tree
+
 }
