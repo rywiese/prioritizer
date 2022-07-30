@@ -14,6 +14,7 @@ import react.dom.html.ReactHTML.div
 
 external interface ChildrenProps : Props {
     var children: Set<Tree>
+    var onClickChild: (childId: String) -> Unit
 }
 
 val Children = FC { props: ChildrenProps ->
@@ -31,9 +32,9 @@ val Children = FC { props: ChildrenProps ->
                     padding = 25.px
                 }
                 Child {
-                    childId = child.id
                     name = child.name
                     firstItemOrNull = child.queue.firstOrNull()
+                    onClick = { props.onClickChild(child.id) }
                 }
             }
         }

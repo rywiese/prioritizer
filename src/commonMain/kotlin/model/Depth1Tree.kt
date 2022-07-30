@@ -1,25 +1,27 @@
 package model
 
-data class ShallowTree(
+data class Depth1Tree(
     override val id: String,
     override val name: String,
     override val queue: List<Item>,
     override val parentId: String?,
-    override val childIds: Set<String>
-) : Tree {
-
-    override fun subTree(childId: String): Tree? = null
-
-    override fun limitDepth(depth: Int): Tree = this
+    val children: Set<ShallowTree>
+) : Tree by DeepTree(
+    id = id,
+    name = name,
+    queue = queue,
+    parentId = parentId,
+    children = children
+) {
 
     constructor(
-        tree: Tree
+        tree: DeepTree
     ) : this(
         id = tree.id,
         name = tree.name,
         queue = tree.queue,
         parentId = tree.parentId,
-        childIds = tree.childIds
+        children = tree.children.map(::ShallowTree).toSet()
     )
 
 }
