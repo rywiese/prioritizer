@@ -4,14 +4,15 @@ import csstype.Display
 import csstype.FlexDirection
 import csstype.FlexGrow
 import csstype.vh
-import model.DeepTree
+import model.Tree
 import react.FC
 import react.Props
 import react.css.css
 import react.dom.html.ReactHTML.div
 
 external interface TreeProps : Props {
-    var tree: DeepTree
+    var tree: Tree
+    var children: Set<Tree>
     var onClickChild: (childId: String) -> Unit
     var onClickParent: (parentId: String) -> Unit
 }
@@ -53,7 +54,7 @@ val Tree = FC { props: TreeProps ->
                 flexGrow = FlexGrow(1.0)
             }
             Children {
-                children = props.tree.children
+                children = props.children
                 onClickChild = props.onClickChild
             }
         }

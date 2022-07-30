@@ -12,4 +12,8 @@ interface Tree : Identifiable {
 
     val childIds: Set<String>
 
+    fun subTree(childId: String): Tree?
+
+    fun limitDepth(depth: Int): Tree
+
 }
