@@ -1,5 +1,4 @@
 import api.MockTreeApi
-import client.TreeClient
 import component.Top
 import kotlinx.browser.document
 import react.create
@@ -11,7 +10,6 @@ fun main() {
 
     val treeComponent = Top.create {
         treeApi = MockTreeApi
-        treeClient = TreeClient
     }
     render(treeComponent, container)
 }

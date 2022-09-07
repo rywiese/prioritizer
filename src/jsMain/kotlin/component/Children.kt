@@ -32,7 +32,7 @@ val Children = FC { props: ChildrenProps ->
                     padding = 25.px
                 }
                 Child {
-                    name = child.name
+                    name = child.category.name
                     firstItemOrNull = child.queue.firstOrNull()
                     onClick = { props.onClickChild(child.id) }
                 }

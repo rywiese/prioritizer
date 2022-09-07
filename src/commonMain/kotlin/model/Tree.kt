@@ -1,18 +1,35 @@
 package model
 
 import protocol.Identifiable
-import protocol.Named
 
-interface Tree : Identifiable, Named {
+data class Tree(
+    val category: Category,
+    val queue: List<Item>,
+    val parentId: String?,
+    val children: Set<Tree>,
+) : Identifiable by category {
 
-    val queue: List<Item>
+    fun subTree(
+        childId: String
+    ): Tree? =
+        takeIf { this.id == childId }
+            ?: children.firstNotNullOfOrNull { child: Tree ->
+                child.subTree(childId)
+            }
 
-    val parentId: String?
-
-    val childIds: Set<String>
-
-    fun subTree(childId: String): Tree?
-
-    fun limitDepth(depth: Int): Tree
+    fun limitDepth(
+        depth: Int
+    ): Tree =
+        when {
+            children.isEmpty() -> this
+            depth <= 0 -> copy(children = emptySet())
+            else -> copy(
+                children = children
+                    .map { child: Tree ->
+                        child.limitDepth(depth - 1)
+                    }
+                    .toSet()
+            )
+        }
 
 }

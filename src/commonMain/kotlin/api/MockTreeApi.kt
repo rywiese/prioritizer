@@ -1,6 +1,6 @@
 package api
 
-import model.DeepTree
+import model.Category
 import model.Item
 import model.Tree
 
@@ -25,15 +25,47 @@ object MockTreeApi : TreeApi {
             .subTree(treeId)
             ?.limitDepth(treeDepth)
 
-    private val budget = DeepTree(
-        id = "newTree",
-        name = "Budget",
+    override suspend fun getParent(
+        treeId: String,
+        treeDepth: Int,
+        queueLength: Int
+    ): Tree? =
+        getParent(
+            root = budget,
+            treeId = treeId
+        )
+
+    private fun getParent(
+        root: Tree,
+        treeId: String,
+    ): Tree? =
+        root.children
+            .find { tree: Tree ->
+                tree.id == treeId
+            }
+            ?.let {
+                root
+            }
+            ?: root.children.firstNotNullOfOrNull { tree: Tree ->
+                getParent(
+                    root = tree,
+                    treeId = treeId
+                )
+            }
+
+    val budget = Tree(
+        Category(
+            id = "budget",
+            name = "Budget",
+        ),
         queue = emptyList(),
         parentId = null,
         children = setOf(
-            DeepTree(
-                id = "food",
-                name = "Food",
+            Tree(
+                Category(
+                    id = "food",
+                    name = "Food",
+                ),
                 queue = listOf(
                     Item(
                         id = "huel",
@@ -54,18 +86,22 @@ object MockTreeApi : TreeApi {
                         link = "https://cub.com/rice"
                     )
                 ),
-                parentId = "newTree",
+                parentId = "budget",
                 children = emptySet()
             ),
-            DeepTree(
-                id = "clothes",
-                name = "Clothes",
+            Tree(
+                Category(
+                    id = "clothes",
+                    name = "Clothes",
+                ),
                 queue = emptyList(),
-                parentId = "newTree",
+                parentId = "budget",
                 children = setOf(
-                    DeepTree(
-                        id = "shoes",
-                        name = "Shoes",
+                    Tree(
+                        Category(
+                            id = "shoes",
+                            name = "Shoes",
+                        ),
                         queue = listOf(
                             Item(
                                 id = "flipFlops",
@@ -89,9 +125,11 @@ object MockTreeApi : TreeApi {
                         parentId = "clothes",
                         children = emptySet()
                     ),
-                    DeepTree(
-                        id = "socks",
-                        name = "Socks",
+                    Tree(
+                        Category(
+                            id = "socks",
+                            name = "Socks",
+                        ),
                         queue = listOf(
                             Item(
                                 id = "adidas",

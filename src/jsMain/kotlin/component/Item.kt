@@ -10,7 +10,7 @@ external interface ItemProps : Props {
     var item: Item
 }
 
-val Item = FC<ItemProps> { props: ItemProps ->
+val Item = FC { props: ItemProps ->
     div {
         p {
             +"Name: ${props.item.name}"

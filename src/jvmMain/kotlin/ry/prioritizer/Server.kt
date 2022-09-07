@@ -14,6 +14,7 @@ import kotlinx.html.head
 import kotlinx.html.id
 import kotlinx.html.script
 import kotlinx.html.title
+import ry.prioritizer.plugins.configureKGraphQL
 
 fun HTML.index() {
     head {
@@ -29,6 +30,7 @@ fun HTML.index() {
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "127.0.0.1") {
+        configureKGraphQL()
         routing {
             get("/") {
                 call.respondHtml(HttpStatusCode.OK, HTML::index)

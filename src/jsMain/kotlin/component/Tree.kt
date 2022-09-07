@@ -12,9 +12,8 @@ import react.dom.html.ReactHTML.div
 
 external interface TreeProps : Props {
     var tree: Tree
-    var children: Set<Tree>
     var onClickChild: (childId: String) -> Unit
-    var onClickParent: (parentId: String) -> Unit
+    var onClickParent: () -> Unit
 }
 
 val Tree = FC { props: TreeProps ->
@@ -28,23 +27,17 @@ val Tree = FC { props: TreeProps ->
             css {
                 flexGrow = FlexGrow(1.0)
             }
-            props.tree.parentId?.let { parentId: String ->
-                Parent {
-                    name = parentId
-                    onClick = {
-                        props.onClickParent(parentId)
-                    }
-                }
-            } ?: Parent {
-                name = "Root"
-                onClick = { }
+            Parent {
+                name = "Back"
+                onClick = props.onClickParent
             }
         }
         div {
             css {
                 flexGrow = FlexGrow(4.0)
             }
-            +props.tree.name
+            // TODO: Category component or something
+            +props.tree.category.name
             Queue {
                 items = props.tree.queue
             }
@@ -54,7 +47,7 @@ val Tree = FC { props: TreeProps ->
                 flexGrow = FlexGrow(1.0)
             }
             Children {
-                children = props.children
+                children = props.tree.children
                 onClickChild = props.onClickChild
             }
         }

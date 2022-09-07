@@ -39,6 +39,8 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
+                implementation("com.apurebase:kgraphql:0.17.14")
+                implementation("com.apurebase:kgraphql-ktor:0.17.14")
                 implementation("io.ktor:ktor-server-netty:1.6.7")
                 implementation("io.ktor:ktor-html-builder:1.6.7")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")

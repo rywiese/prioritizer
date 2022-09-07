@@ -20,4 +20,10 @@ interface TreeApi {
         queueLength: Int
     ): Tree?
 
+    suspend fun getParent(
+        treeId: String,
+        treeDepth: Int,
+        queueLength: Int
+    ): Tree?
+
 }
