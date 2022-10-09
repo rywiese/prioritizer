@@ -1,12 +1,14 @@
 package ry.prioritizer
 
-import io.ktor.application.*
-import io.ktor.html.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.routing.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.call
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.html.respondHtml
+import io.ktor.server.http.content.resources
+import io.ktor.server.http.content.static
+import io.ktor.server.netty.Netty
+import io.ktor.server.routing.get
+import io.ktor.server.routing.routing
 import kotlinx.html.HTML
 import kotlinx.html.body
 import kotlinx.html.div
