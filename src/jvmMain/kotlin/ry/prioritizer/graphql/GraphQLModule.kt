@@ -16,8 +16,8 @@ import graphql.GraphQL
 import graphql.schema.GraphQLSchema
 import io.ktor.server.application.Application
 import io.ktor.server.request.ApplicationRequest
-import ry.prioritizer.schema.mutations.AddChildToTree
-import ry.prioritizer.schema.mutations.AddItemToQueue
+import ry.prioritizer.schema.mutations.CreateCategory
+import ry.prioritizer.schema.mutations.CreateItem
 import ry.prioritizer.schema.mutations.DeleteCategory
 import ry.prioritizer.schema.mutations.PopItemFromQueue
 import ry.prioritizer.schema.queries.Health
@@ -51,22 +51,25 @@ abstract class GraphQLModule {
         @Singleton
         fun provideGraphQLSchema(
             schemaGeneratorConfig: SchemaGeneratorConfig,
+            health: Health,
             root: Root,
             treeByCategoryId: TreeByCategoryId,
-            deleteCategory: DeleteCategory
+            createCategory: CreateCategory,
+            deleteCategory: DeleteCategory,
+            createItem: CreateItem
         ): GraphQLSchema =
             toSchema(
                 config = schemaGeneratorConfig,
                 queries = listOf(
-                    TopLevelObject(Health),
+                    TopLevelObject(health),
                     TopLevelObject(root),
                     TopLevelObject(treeByCategoryId),
                 ),
                 mutations = listOf(
-                    TopLevelObject(AddItemToQueue),
+                    TopLevelObject(createItem),
                     TopLevelObject(PopItemFromQueue),
-                    TopLevelObject(deleteCategory),
-                    TopLevelObject(AddChildToTree)
+                    TopLevelObject(createCategory),
+                    TopLevelObject(deleteCategory)
                 )
             )
 

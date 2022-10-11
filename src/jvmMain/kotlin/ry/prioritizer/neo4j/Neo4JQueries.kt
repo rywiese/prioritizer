@@ -1,6 +1,5 @@
 package ry.prioritizer.neo4j
 
-import io.ktor.server.routing.RoutingPath.Companion.root
 import org.neo4j.driver.Record
 import org.neo4j.driver.Transaction
 import org.neo4j.driver.types.Node
@@ -22,6 +21,48 @@ object Neo4JQueries {
                 Category(
                     id = root.id().toString(),
                     name = root["name"].asString()
+                )
+            }
+
+    fun Transaction.createCategory(
+        parentId: String,
+        name: String
+    ): Category? =
+        run("match (parent) where ID(parent)=$parentId create (parent)-[:PARENT_OF]->(new:Category{name:\"$name\"}) return new")
+            .list()
+            .firstOrNull()
+            ?.get("new")
+            ?.asNode()
+            ?.let { root: Node ->
+                Category(
+                    id = root.id().toString(),
+                    name = root["name"].asString()
+                )
+            }
+
+    fun Transaction.deleteCategory(
+        categoryId: String
+    ) {
+        run("match (category:Category)-[*0..]->(child) where ID(category)=$categoryId detach delete child")
+    }
+
+    fun Transaction.createItem(
+        categoryId: String,
+        name: String,
+        price: Double,
+        link: String
+    ): Item? =
+        run("match (category:Category)-[:NEXT_ITEM*0..]->(item) where ID(category)=$categoryId and NOT (item)-[:NEXT_ITEM]->() create (item)-[:NEXT_ITEM]->(new:Item{name:\"$name\",price:$price,link:\"$link\"}) return new")
+            .list()
+            .firstOrNull()
+            ?.get("new")
+            ?.asNode()
+            ?.let { item: Node ->
+                Item(
+                    id = item.id().toString(),
+                    name = item["name"].asString(),
+                    price = item["price"].asDouble(),
+                    link = item["link"].asString()
                 )
             }
 
@@ -124,11 +165,5 @@ object Neo4JQueries {
                 }
             )
         }
-
-    fun Transaction.deleteCategory(
-        categoryId: String
-    ) {
-        run("match (category:Category)-[*0..]->(child) where ID(category)=$categoryId detach delete child")
-    }
 
 }
