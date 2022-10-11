@@ -6,7 +6,9 @@ import org.neo4j.driver.Transaction
 import ry.prioritizer.neo4j.Neo4JQueries.getRoot
 import ry.prioritizer.schema.model.Tree
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class Root @Inject constructor(
     private val neo4jDriver: Driver
 ) : Query {
