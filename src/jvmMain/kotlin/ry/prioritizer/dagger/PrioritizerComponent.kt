@@ -33,13 +33,13 @@ interface PrioritizerComponent {
         fun port(@Named("port") port: Int): Builder
 
         @BindsInstance
-        fun neo4JUri(@Named("neo4JUri") neo4JUri: String): Builder
+        fun neo4jUri(@Named("neo4jUri") neo4jUri: String): Builder
 
         @BindsInstance
-        fun neo4JUsername(@Named("neo4JUsername") neo4JUsername: String): Builder
+        fun neo4jUsername(@Named("neo4jUsername") neo4jUsername: String): Builder
 
         @BindsInstance
-        fun neo4JPassword(@Named("neo4JPassword") neo4JPassword: String): Builder
+        fun neo4jPassword(@Named("neo4jPassword") neo4jPassword: String): Builder
 
         fun build(): ry.prioritizer.dagger.PrioritizerComponent
 
