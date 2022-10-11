@@ -69,57 +69,27 @@ object Neo4JQueries {
     fun Transaction.getQueue(
         categoryId: String
     ): List<Item>? =
-        run("match (category:Category)-[:NEXT_ITEM*0..1]->(item) where ID(category)=$categoryId return category, ID(item) as itemId")
+        run("match path=(category:Category)-[:NEXT_ITEM*0..]->(item) where ID(category)=$categoryId return item, LENGTH(path) as length")
             .list()
-            .let { records: List<Record> ->
-                val category: Category? = records
-                    .getOrNull(0)
-                    ?.get("category")
-                    ?.asNode()
-                    ?.let { root: Node ->
-                        Category(
-                            id = root.id().toString(),
-                            name = root["name"].asString()
-                        )
-                    }
-                val itemId: String? = records
-                    .getOrNull(1)
-                    ?.get("itemId")
-                    ?.asLong()
-                    ?.toString()
-                category?.to(itemId)
+            .takeIf(List<*>::isNotEmpty)
+            ?.drop(1)
+            ?.map { record: Record ->
+                val item: Item = record["item"].asNode().let { item: Node ->
+                    Item(
+                        id = item.id().toString(),
+                        name = item["name"].asString(),
+                        price = item["price"].asDouble(),
+                        link = item["link"].asString()
+                    )
+                }
+                val length: Int = record["length"].asInt()
+                item to length
             }
-            ?.let { (_, itemId: String?) ->
-                itemId?.let { getQueueStartingWith(it) } ?: emptyList()
+            ?.sortedBy { (_, length: Int) ->
+                length
             }
-
-    fun Transaction.getQueueStartingWith(
-        itemId: String
-    ): List<Item>? =
-        run("match (item:Item)-[PRECEDES*0..1]->(nextItem:Item) where ID(item)=$itemId return item, ID(nextItem) as nextItemId")
-            .list()
-            .let { records: List<Record> ->
-                val item: Item? = records
-                    .getOrNull(0)
-                    ?.get("item")
-                    ?.asNode()
-                    ?.let { node: Node ->
-                        Item(
-                            id = node.id().toString(),
-                            name = node["name"].asString(),
-                            price = node["price"].asDouble(),
-                            link = node["link"].asString()
-                        )
-                    }
-                val nextItemId: String? = records
-                    .getOrNull(1)
-                    ?.get("nextItemId")
-                    ?.asLong()
-                    ?.toString()
-                item?.to(nextItemId)
-            }
-            ?.let { (item: Item, nextItemId: String?) ->
-                listOf(item) + (nextItemId?.let { getQueueStartingWith(it) } ?: emptyList())
+            ?.map { (item: Item, _) ->
+                item
             }
 
     fun Transaction.getChildIds(
