@@ -13,16 +13,16 @@ object Components {
     fun createPrioritizerComponent(
         host: String,
         port: Int,
-        neo4JUri: String,
-        neo4JUsername: String,
-        neo4JPassword: String
+        neo4jUri: String,
+        neo4jUsername: String,
+        neo4jPassword: String
     ): PrioritizerComponent =
         DaggerPrioritizerComponent.builder()
             .host(host)
             .port(port)
-            .neo4JUri(neo4JUri)
-            .neo4JUsername(neo4JUsername)
-            .neo4JPassword(neo4JPassword)
+            .neo4jUri(neo4jUri)
+            .neo4jUsername(neo4jUsername)
+            .neo4jPassword(neo4jPassword)
             .build()
 
 }

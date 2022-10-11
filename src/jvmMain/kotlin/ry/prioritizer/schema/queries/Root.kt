@@ -8,11 +8,11 @@ import ry.prioritizer.schema.model.Tree
 import javax.inject.Inject
 
 class Root @Inject constructor(
-    private val neo4JDriver: Driver
+    private val neo4jDriver: Driver
 ) : Query {
 
     fun root(): Tree? =
-        neo4JDriver.session().readTransaction { transaction: Transaction ->
+        neo4jDriver.session().readTransaction { transaction: Transaction ->
             transaction.getRoot()
         }
 
