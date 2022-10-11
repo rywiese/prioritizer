@@ -43,7 +43,6 @@ kotlin {
                 implementation("com.expediagroup:graphql-kotlin-spring-server:6.2.5")
                 implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
                 implementation("com.google.dagger:dagger:2.44")
-                //kapt("com.google.dagger:dagger-compiler:2.44")
                 configurations["kapt"].dependencies.add(
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
                         "com.google.dagger",
@@ -53,8 +52,8 @@ kotlin {
                 )
                 implementation("io.ktor:ktor-server-netty:2.1.2")
                 implementation("io.ktor:ktor-server-html-builder:2.1.2")
-                implementation("org.neo4j.driver:neo4j-java-driver:4.4.9")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
+                implementation("org.neo4j.driver:neo4j-java-driver:4.4.9")
             }
         }
         val jvmTest by getting

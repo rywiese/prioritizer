@@ -1,5 +1,6 @@
 package ry.prioritizer.neo4j
 
+import io.ktor.server.routing.RoutingPath.Companion.root
 import org.neo4j.driver.Record
 import org.neo4j.driver.Transaction
 import org.neo4j.driver.types.Node
@@ -90,7 +91,7 @@ object Neo4JQueries {
             .toSet()
 
     fun Transaction.getRoot(): Tree? =
-        run("match (root) -[:PARENT_OF]-> (child) where not () -[:PARENT_OF]->(root) return root")
+        run("match (root) -[:PARENT_OF*0..]-> (child) where not ()-[:PARENT_OF]->(root) return root")
             .list()
             .firstOrNull()
             ?.get("root")
@@ -123,5 +124,11 @@ object Neo4JQueries {
                 }
             )
         }
+
+    fun Transaction.deleteCategory(
+        categoryId: String
+    ) {
+        run("match (category:Category)-[*0..]->(child) where ID(category)=$categoryId detach delete child")
+    }
 
 }

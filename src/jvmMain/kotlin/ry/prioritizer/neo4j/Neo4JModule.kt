@@ -15,15 +15,15 @@ object Neo4JModule {
     @Provides
     @Singleton
     fun provideAuthToken(
-        @Named("neo4JUsername") username: String,
-        @Named("neo4JPassword") password: String,
+        @Named("neo4jUsername") username: String,
+        @Named("neo4jPassword") password: String,
     ): AuthToken =
         AuthTokens.basic(username, password)
 
     @Provides
     @Singleton
     fun provideNeo4JDriver(
-        @Named("neo4JUri") uri: String,
+        @Named("neo4jUri") uri: String,
         authTokens: AuthToken
     ): Driver =
         GraphDatabase.driver(uri, authTokens)
