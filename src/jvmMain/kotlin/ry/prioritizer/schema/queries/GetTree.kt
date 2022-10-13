@@ -6,8 +6,10 @@ import org.neo4j.driver.Transaction
 import ry.prioritizer.neo4j.Neo4JQueries.getTree
 import ry.prioritizer.schema.model.Tree
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class TreeByCategoryId @Inject constructor(
+@Singleton
+class GetTree @Inject constructor(
     private val neo4jDriver: Driver
 ) : Query {
 
