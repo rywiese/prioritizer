@@ -2,7 +2,6 @@ package ry.prioritizer.neo4j
 
 import org.neo4j.driver.Record
 import org.neo4j.driver.Transaction
-import org.neo4j.driver.types.Node
 import ry.prioritizer.schema.model.Category
 import ry.prioritizer.schema.model.Item
 import ry.prioritizer.schema.model.Tree
@@ -16,13 +15,7 @@ object Neo4JQueries {
             .list()
             .firstOrNull()
             ?.get("category")
-            ?.asNode()
-            ?.let { root: Node ->
-                Category(
-                    id = root.id().toString(),
-                    name = root["name"].asString()
-                )
-            }
+            ?.let(CategoryParser::parse)
 
     fun Transaction.createCategory(
         parentId: String,
@@ -32,13 +25,7 @@ object Neo4JQueries {
             .list()
             .firstOrNull()
             ?.get("new")
-            ?.asNode()
-            ?.let { root: Node ->
-                Category(
-                    id = root.id().toString(),
-                    name = root["name"].asString()
-                )
-            }
+            ?.let(CategoryParser::parse)
 
     fun Transaction.deleteTree(
         categoryId: String
@@ -62,15 +49,7 @@ object Neo4JQueries {
             .list()
             .firstOrNull()
             ?.get("new")
-            ?.asNode()
-            ?.let { item: Node ->
-                Item(
-                    id = item.id().toString(),
-                    name = item["name"].asString(),
-                    price = item["price"].asDouble(),
-                    link = item["link"].asString()
-                )
-            }
+            ?.let(ItemParser::parse)
 
     fun Transaction.popItem(
         categoryId: String
@@ -78,14 +57,7 @@ object Neo4JQueries {
         run("match path=(category:Category)-[:NEXT_ITEM*1..2]->(item:Item) where ID(category)=$categoryId return item, LENGTH(path) as length")
             .list { record: Record ->
                 val numberOfItems: Int = record["length"].asInt()
-                val item: Item = record["item"].asNode().let { item: Node ->
-                    Item(
-                        id = item.id().toString(),
-                        name = item["name"].asString(),
-                        price = item["price"].asDouble(),
-                        link = item["link"].asString()
-                    )
-                }
+                val item: Item = ItemParser.parse(record["item"])
                 numberOfItems to item
             }
             .sortedBy { (numberOfItems: Int, _) ->
@@ -114,18 +86,16 @@ object Neo4JQueries {
             .list()
             .takeIf(List<*>::isNotEmpty)
             ?.drop(1)
-            ?.sortedBy { record: Record ->
-                record["length"].asInt()
-            }
             ?.map { record: Record ->
-                record["item"].asNode().let { item: Node ->
-                    Item(
-                        id = item.id().toString(),
-                        name = item["name"].asString(),
-                        price = item["price"].asDouble(),
-                        link = item["link"].asString()
-                    )
-                }
+                val numberOfItems: Int = record["length"].asInt()
+                val item: Item = ItemParser.parse(record["item"])
+                numberOfItems to item
+            }
+            ?.sortedBy { (numberOfItems: Int, _) ->
+                numberOfItems
+            }
+            ?.map { (_, item: Item) ->
+                item
             }
 
     fun Transaction.getRoot(): Tree? =
@@ -133,13 +103,7 @@ object Neo4JQueries {
             .list()
             .firstOrNull()
             ?.get("root")
-            ?.asNode()
-            ?.let { root: Node ->
-                Category(
-                    id = root.id().toString(),
-                    name = root["name"].asString()
-                )
-            }
+            ?.let(CategoryParser::parse)
             ?.let { category: Category ->
                 Tree(
                     category,
