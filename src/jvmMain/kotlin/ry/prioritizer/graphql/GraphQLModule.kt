@@ -18,7 +18,7 @@ import io.ktor.server.application.Application
 import io.ktor.server.request.ApplicationRequest
 import ry.prioritizer.schema.mutations.CreateCategory
 import ry.prioritizer.schema.mutations.CreateItem
-import ry.prioritizer.schema.mutations.DeleteTree
+import ry.prioritizer.schema.mutations.DeleteCategory
 import ry.prioritizer.schema.mutations.PopItem
 import ry.prioritizer.schema.queries.Health
 import ry.prioritizer.schema.queries.Root
@@ -55,7 +55,7 @@ abstract class GraphQLModule {
             root: Root,
             getTree: GetTree,
             createCategory: CreateCategory,
-            deleteTree: DeleteTree,
+            deleteCategory: DeleteCategory,
             createItem: CreateItem,
             popItem: PopItem,
         ): GraphQLSchema =
@@ -70,7 +70,7 @@ abstract class GraphQLModule {
                     TopLevelObject(createItem),
                     TopLevelObject(popItem),
                     TopLevelObject(createCategory),
-                    TopLevelObject(deleteTree)
+                    TopLevelObject(deleteCategory)
                 )
             )
 

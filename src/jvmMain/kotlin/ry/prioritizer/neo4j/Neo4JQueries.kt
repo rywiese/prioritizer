@@ -27,7 +27,7 @@ object Neo4JQueries {
             ?.get("new")
             ?.let(CategoryParser::parse)
 
-    fun Transaction.deleteTree(
+    fun Transaction.deleteCategory(
         categoryId: String
     ) {
         getChildIds(categoryId)
@@ -35,7 +35,7 @@ object Neo4JQueries {
                 run("match (category:Category)-[*0..]->(child) where ID(category)=$categoryId detach delete child")
             }
             ?.map { childId: String ->
-                deleteTree(childId)
+                deleteCategory(childId)
             }
     }
 
