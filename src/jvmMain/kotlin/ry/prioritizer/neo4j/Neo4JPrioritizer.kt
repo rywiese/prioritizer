@@ -3,15 +3,15 @@ package ry.prioritizer.neo4j
 import org.neo4j.driver.Driver
 import org.neo4j.driver.Transaction
 import ry.prioritizer.PrioritizerApi
+import ry.prioritizer.model.Category
+import ry.prioritizer.model.Item
+import ry.prioritizer.model.Tree
 import ry.prioritizer.neo4j.Neo4JQueries.createCategory
 import ry.prioritizer.neo4j.Neo4JQueries.createItem
 import ry.prioritizer.neo4j.Neo4JQueries.deleteCategory
 import ry.prioritizer.neo4j.Neo4JQueries.getRoot
 import ry.prioritizer.neo4j.Neo4JQueries.getTree
 import ry.prioritizer.neo4j.Neo4JQueries.popItem
-import ry.prioritizer.neo4j.model.Neo4JCategory
-import ry.prioritizer.neo4j.model.Neo4JItem
-import ry.prioritizer.neo4j.model.Neo4JTree
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,14 +20,14 @@ class Neo4JPrioritizer @Inject constructor(
     private val neo4jDriver: Driver
 ) : PrioritizerApi {
 
-    override suspend fun getRoot(): Neo4JTree? =
+    override suspend fun getRoot(): Tree? =
         neo4jDriver.session().readTransaction { transaction: Transaction ->
             transaction.getRoot()
         }
 
     override suspend fun getTree(
         categoryId: String
-    ): Neo4JTree? =
+    ): Tree? =
         neo4jDriver.session().readTransaction { transaction: Transaction ->
             transaction.getTree(categoryId)
         }
@@ -35,7 +35,7 @@ class Neo4JPrioritizer @Inject constructor(
     override suspend fun createCategory(
         parentId: String,
         name: String
-    ): Neo4JCategory? =
+    ): Category? =
         neo4jDriver.session().writeTransaction { transaction: Transaction ->
             transaction.createCategory(parentId, name)
         }
@@ -53,7 +53,7 @@ class Neo4JPrioritizer @Inject constructor(
         name: String,
         price: Double,
         link: String
-    ): Neo4JItem? =
+    ): Item? =
         neo4jDriver.session().writeTransaction { transaction: Transaction ->
             transaction.createItem(
                 categoryId = categoryId,
@@ -65,7 +65,7 @@ class Neo4JPrioritizer @Inject constructor(
 
     override suspend fun popItem(
         categoryId: String
-    ): Neo4JItem? =
+    ): Item? =
         neo4jDriver.session().writeTransaction { transaction: Transaction ->
             transaction.popItem(categoryId)
         }

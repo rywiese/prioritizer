@@ -9,31 +9,27 @@ import com.expediagroup.graphql.server.execution.GraphQLContextFactory
 import com.expediagroup.graphql.server.execution.GraphQLRequestHandler
 import com.expediagroup.graphql.server.execution.GraphQLRequestParser
 import com.expediagroup.graphql.server.execution.GraphQLServer
-import dagger.Binds
+import com.expediagroup.graphql.server.types.GraphQLServerRequest
+import com.fasterxml.jackson.databind.ObjectMapper
 import dagger.Module
 import dagger.Provides
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema
 import io.ktor.server.application.Application
 import io.ktor.server.request.ApplicationRequest
+import io.ktor.server.request.receiveText
 import ry.prioritizer.graphql.schema.mutations.CreateCategory
 import ry.prioritizer.graphql.schema.mutations.CreateItem
 import ry.prioritizer.graphql.schema.mutations.DeleteCategory
 import ry.prioritizer.graphql.schema.mutations.PopItem
+import ry.prioritizer.graphql.schema.queries.GetTree
 import ry.prioritizer.graphql.schema.queries.Health
 import ry.prioritizer.graphql.schema.queries.Root
-import ry.prioritizer.graphql.schema.queries.GetTree
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
 abstract class GraphQLModule {
-
-    @Binds
-    @Singleton
-    abstract fun bindGraphQLRequestParser(
-        ktorRequestParser: KtorRequestParser
-    ): GraphQLRequestParser<ApplicationRequest>
 
     companion object {
 
@@ -97,6 +93,18 @@ abstract class GraphQLModule {
                 graphQL,
                 kotlinDataLoaderRegistryFactory
             )
+
+        @Provides
+        @Singleton
+        fun provideGraphQLRequestParser(
+            objectMapper: ObjectMapper
+        ): GraphQLRequestParser<ApplicationRequest> =
+            object : GraphQLRequestParser<ApplicationRequest> {
+
+                override suspend fun parseRequest(request: ApplicationRequest): GraphQLServerRequest? =
+                    objectMapper.readValue(request.call.receiveText(), GraphQLServerRequest::class.java)
+
+            }
 
         @Provides
         @Singleton

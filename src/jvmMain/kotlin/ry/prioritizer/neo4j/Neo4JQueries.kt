@@ -2,11 +2,8 @@ package ry.prioritizer.neo4j
 
 import org.neo4j.driver.Record
 import org.neo4j.driver.Transaction
-import ry.prioritizer.neo4j.model.Neo4JCategory
-import ry.prioritizer.neo4j.model.Neo4JItem
-import ry.prioritizer.neo4j.model.Neo4JTree
 
-object Neo4JQueries {
+internal object Neo4JQueries {
 
     fun Transaction.getCategory(
         categoryId: String
