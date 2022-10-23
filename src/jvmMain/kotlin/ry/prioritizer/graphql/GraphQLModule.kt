@@ -16,13 +16,13 @@ import graphql.GraphQL
 import graphql.schema.GraphQLSchema
 import io.ktor.server.application.Application
 import io.ktor.server.request.ApplicationRequest
-import ry.prioritizer.schema.mutations.CreateCategory
-import ry.prioritizer.schema.mutations.CreateItem
-import ry.prioritizer.schema.mutations.DeleteCategory
-import ry.prioritizer.schema.mutations.PopItem
-import ry.prioritizer.schema.queries.Health
-import ry.prioritizer.schema.queries.Root
-import ry.prioritizer.schema.queries.GetTree
+import ry.prioritizer.graphql.schema.mutations.CreateCategory
+import ry.prioritizer.graphql.schema.mutations.CreateItem
+import ry.prioritizer.graphql.schema.mutations.DeleteCategory
+import ry.prioritizer.graphql.schema.mutations.PopItem
+import ry.prioritizer.graphql.schema.queries.Health
+import ry.prioritizer.graphql.schema.queries.Root
+import ry.prioritizer.graphql.schema.queries.GetTree
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -45,7 +45,7 @@ abstract class GraphQLModule {
         @Provides
         @Singleton
         fun provideSchemaGeneratorConfig(): SchemaGeneratorConfig =
-            SchemaGeneratorConfig(supportedPackages = listOf("ry.prioritizer"))
+            SchemaGeneratorConfig(supportedPackages = listOf("ry.prioritizer.graphql.schema"))
 
         @Provides
         @Singleton

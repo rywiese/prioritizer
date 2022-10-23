@@ -1,4 +1,4 @@
-package ry.prioritizer.schema.queries
+package ry.prioritizer.graphql.schema.queries
 
 import com.expediagroup.graphql.server.operations.Query
 import javax.inject.Inject

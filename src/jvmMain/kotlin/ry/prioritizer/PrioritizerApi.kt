@@ -1,8 +1,8 @@
 package ry.prioritizer
 
-import ry.prioritizer.schema.model.Category
-import ry.prioritizer.schema.model.Item
-import ry.prioritizer.schema.model.Tree
+import ry.prioritizer.model.Category
+import ry.prioritizer.model.Item
+import ry.prioritizer.model.Tree
 
 interface PrioritizerApi {
 

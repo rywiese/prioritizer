@@ -9,9 +9,9 @@ import ry.prioritizer.neo4j.Neo4JQueries.deleteCategory
 import ry.prioritizer.neo4j.Neo4JQueries.getRoot
 import ry.prioritizer.neo4j.Neo4JQueries.getTree
 import ry.prioritizer.neo4j.Neo4JQueries.popItem
-import ry.prioritizer.schema.model.Category
-import ry.prioritizer.schema.model.Item
-import ry.prioritizer.schema.model.Tree
+import ry.prioritizer.neo4j.model.Neo4JCategory
+import ry.prioritizer.neo4j.model.Neo4JItem
+import ry.prioritizer.neo4j.model.Neo4JTree
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,14 +20,14 @@ class Neo4JPrioritizer @Inject constructor(
     private val neo4jDriver: Driver
 ) : PrioritizerApi {
 
-    override suspend fun getRoot(): Tree? =
+    override suspend fun getRoot(): Neo4JTree? =
         neo4jDriver.session().readTransaction { transaction: Transaction ->
             transaction.getRoot()
         }
 
     override suspend fun getTree(
         categoryId: String
-    ): Tree? =
+    ): Neo4JTree? =
         neo4jDriver.session().readTransaction { transaction: Transaction ->
             transaction.getTree(categoryId)
         }
@@ -35,7 +35,7 @@ class Neo4JPrioritizer @Inject constructor(
     override suspend fun createCategory(
         parentId: String,
         name: String
-    ): Category? =
+    ): Neo4JCategory? =
         neo4jDriver.session().writeTransaction { transaction: Transaction ->
             transaction.createCategory(parentId, name)
         }
@@ -53,7 +53,7 @@ class Neo4JPrioritizer @Inject constructor(
         name: String,
         price: Double,
         link: String
-    ): Item? =
+    ): Neo4JItem? =
         neo4jDriver.session().writeTransaction { transaction: Transaction ->
             transaction.createItem(
                 categoryId = categoryId,
@@ -65,7 +65,7 @@ class Neo4JPrioritizer @Inject constructor(
 
     override suspend fun popItem(
         categoryId: String
-    ): Item? =
+    ): Neo4JItem? =
         neo4jDriver.session().writeTransaction { transaction: Transaction ->
             transaction.popItem(categoryId)
         }

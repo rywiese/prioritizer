@@ -2,15 +2,15 @@ package ry.prioritizer.neo4j
 
 import org.neo4j.driver.Record
 import org.neo4j.driver.Transaction
-import ry.prioritizer.schema.model.Category
-import ry.prioritizer.schema.model.Item
-import ry.prioritizer.schema.model.Tree
+import ry.prioritizer.neo4j.model.Neo4JCategory
+import ry.prioritizer.neo4j.model.Neo4JItem
+import ry.prioritizer.neo4j.model.Neo4JTree
 
 object Neo4JQueries {
 
     fun Transaction.getCategory(
         categoryId: String
-    ): Category? =
+    ): Neo4JCategory? =
         run("match (category:Category) where ID(category)=$categoryId return category")
             .list()
             .firstOrNull()
@@ -20,7 +20,7 @@ object Neo4JQueries {
     fun Transaction.createCategory(
         parentId: String,
         name: String
-    ): Category? =
+    ): Neo4JCategory? =
         run("match (parent) where ID(parent)=$parentId create (parent)-[:PARENT_OF]->(new:Category{name:\"$name\"}) return new")
             .list()
             .firstOrNull()
@@ -44,7 +44,7 @@ object Neo4JQueries {
         name: String,
         price: Double,
         link: String
-    ): Item? =
+    ): Neo4JItem? =
         run("match (category:Category)-[:NEXT_ITEM*0..]->(item) where ID(category)=$categoryId and NOT (item)-[:NEXT_ITEM]->() create (item)-[:NEXT_ITEM]->(new:Item{name:\"$name\",price:$price,link:\"$link\"}) return new")
             .list()
             .firstOrNull()
@@ -53,23 +53,23 @@ object Neo4JQueries {
 
     fun Transaction.popItem(
         categoryId: String
-    ): Item? =
+    ): Neo4JItem? =
         run("match path=(category:Category)-[:NEXT_ITEM*1..2]->(item:Item) where ID(category)=$categoryId return item, LENGTH(path) as length")
             .list { record: Record ->
                 val numberOfItems: Int = record["length"].asInt()
-                val item: Item = ItemParser.parse(record["item"])
+                val item: Neo4JItem = ItemParser.parse(record["item"])
                 numberOfItems to item
             }
             .sortedBy { (numberOfItems: Int, _) ->
                 numberOfItems
             }
-            .map { (_, item: Item) ->
+            .map { (_, item: Neo4JItem) ->
                 item
             }
-            .let { items: List<Item> ->
+            .let { items: List<Neo4JItem> ->
                 items.getOrNull(0) to items.getOrNull(1)
             }
-            .let { (itemToPop: Item?, nextItem: Item?) ->
+            .let { (itemToPop: Neo4JItem?, nextItem: Neo4JItem?) ->
                 itemToPop?.also {
                     if (nextItem == null) {
                         run("match (category:Category)-[:NEXT_ITEM]->(item:Item) where ID(item)=${itemToPop.id} detach delete item")
@@ -81,31 +81,31 @@ object Neo4JQueries {
 
     fun Transaction.getQueue(
         categoryId: String
-    ): List<Item>? =
+    ): List<Neo4JItem>? =
         run("match path=(category:Category)-[:NEXT_ITEM*0..]->(item) where ID(category)=$categoryId return item, LENGTH(path) as length")
             .list()
             .takeIf(List<*>::isNotEmpty)
             ?.drop(1)
             ?.map { record: Record ->
                 val numberOfItems: Int = record["length"].asInt()
-                val item: Item = ItemParser.parse(record["item"])
+                val item: Neo4JItem = ItemParser.parse(record["item"])
                 numberOfItems to item
             }
             ?.sortedBy { (numberOfItems: Int, _) ->
                 numberOfItems
             }
-            ?.map { (_, item: Item) ->
+            ?.map { (_, item: Neo4JItem) ->
                 item
             }
 
-    fun Transaction.getRoot(): Tree? =
+    fun Transaction.getRoot(): Neo4JTree? =
         run("match (root:Category) where not ()-[:PARENT_OF]->(root) return root")
             .list()
             .firstOrNull()
             ?.get("root")
             ?.let(CategoryParser::parse)
-            ?.let { category: Category ->
-                Tree(
+            ?.let { category: Neo4JCategory ->
+                Neo4JTree(
                     category,
                     queue = getQueue(category.id)!!,
                     children = getChildIds(category.id)!!.map { childId: String ->
@@ -116,9 +116,9 @@ object Neo4JQueries {
 
     fun Transaction.getTree(
         categoryId: String
-    ): Tree? =
-        getCategory(categoryId)?.let { category: Category ->
-            Tree(
+    ): Neo4JTree? =
+        getCategory(categoryId)?.let { category: Neo4JCategory ->
+            Neo4JTree(
                 category = category,
                 queue = getQueue(category.id)!!,
                 children = getChildIds(category.id)!!.map { childId: String ->

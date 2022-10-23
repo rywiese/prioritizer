@@ -1,9 +1,10 @@
-package ry.prioritizer.schema.queries
+package ry.prioritizer.graphql.schema.queries
 
 import com.expediagroup.graphql.server.operations.Query
 import kotlinx.coroutines.runBlocking
 import ry.prioritizer.PrioritizerApi
-import ry.prioritizer.schema.model.Tree
+import ry.prioritizer.model.Tree
+import ry.prioritizer.graphql.schema.model.GraphQLTree
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,9 +15,12 @@ class GetTree @Inject constructor(
 
     fun tree(
         categoryId: String
-    ): Tree? =
+    ): GraphQLTree? =
         runBlocking {
             prioritizerApi.getTree(categoryId)
+                ?.let { tree: Tree ->
+                    GraphQLTree.fromTree(tree)
+                }
         }
 
 }

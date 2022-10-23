@@ -1,4 +1,4 @@
-package ry.prioritizer.schema.mutations
+package ry.prioritizer.graphql.schema.mutations
 
 import com.expediagroup.graphql.server.operations.Mutation
 import kotlinx.coroutines.runBlocking
