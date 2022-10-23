@@ -41,7 +41,7 @@ interface PrioritizerComponent {
         @BindsInstance
         fun neo4jPassword(@Named("neo4jPassword") neo4jPassword: String): Builder
 
-        fun build(): ry.prioritizer.dagger.PrioritizerComponent
+        fun build(): PrioritizerComponent
 
     }
 
