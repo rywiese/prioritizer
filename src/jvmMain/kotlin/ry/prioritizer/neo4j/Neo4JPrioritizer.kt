@@ -20,19 +20,19 @@ class Neo4JPrioritizer @Inject constructor(
     private val neo4jDriver: Driver
 ) : PrioritizerApi {
 
-    override fun getRoot(): Tree? =
+    override suspend fun getRoot(): Tree? =
         neo4jDriver.session().readTransaction { transaction: Transaction ->
             transaction.getRoot()
         }
 
-    override fun getTree(
+    override suspend fun getTree(
         categoryId: String
     ): Tree? =
         neo4jDriver.session().readTransaction { transaction: Transaction ->
             transaction.getTree(categoryId)
         }
 
-    override fun createCategory(
+    override suspend fun createCategory(
         parentId: String,
         name: String
     ): Category? =
@@ -40,14 +40,15 @@ class Neo4JPrioritizer @Inject constructor(
             transaction.createCategory(parentId, name)
         }
 
-    override fun deleteCategory(
+    override suspend fun deleteCategory(
         categoryId: String
     ): String =
         neo4jDriver.session().writeTransaction { transaction: Transaction ->
+            // TODO: figure out how to return `null` if not found.
             transaction.deleteCategory(categoryId).let { categoryId }
         }
 
-    override fun createItem(
+    override suspend fun createItem(
         categoryId: String,
         name: String,
         price: Double,
@@ -62,7 +63,7 @@ class Neo4JPrioritizer @Inject constructor(
             )
         }
 
-    override fun popItem(
+    override suspend fun popItem(
         categoryId: String
     ): Item? =
         neo4jDriver.session().writeTransaction { transaction: Transaction ->

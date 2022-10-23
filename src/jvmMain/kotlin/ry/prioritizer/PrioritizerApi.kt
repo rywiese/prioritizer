@@ -6,19 +6,16 @@ import ry.prioritizer.schema.model.Tree
 
 interface PrioritizerApi {
 
-    fun getRoot(): Tree?
+    suspend fun getRoot(): Tree?
 
-    fun getTree(categoryId: String): Tree?
+    suspend fun getTree(categoryId: String): Tree?
 
-    fun createCategory(parentId: String, name: String): Category?
+    suspend fun createCategory(parentId: String, name: String): Category?
 
-    /**
-     * TODO: Return the deleted [Category.id], or `null` if the [Category] was not found.
-     */
-    fun deleteCategory(categoryId: String): String?
+    suspend fun deleteCategory(categoryId: String): String?
 
-    fun createItem(categoryId: String, name: String, price: Double, link: String): Item?
+    suspend fun createItem(categoryId: String, name: String, price: Double, link: String): Item?
 
-    fun popItem(categoryId: String): Item?
+    suspend fun popItem(categoryId: String): Item?
 
 }

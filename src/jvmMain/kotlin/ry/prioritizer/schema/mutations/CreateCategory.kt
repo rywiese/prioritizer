@@ -1,6 +1,7 @@
 package ry.prioritizer.schema.mutations
 
 import com.expediagroup.graphql.server.operations.Mutation
+import kotlinx.coroutines.runBlocking
 import ry.prioritizer.PrioritizerApi
 import ry.prioritizer.schema.model.Category
 import javax.inject.Inject
@@ -15,9 +16,11 @@ class CreateCategory @Inject constructor(
         parentId: String,
         name: String
     ): Category? =
-        prioritizerApi.createCategory(
-            parentId,
-            name = name
-        )
+        runBlocking {
+            prioritizerApi.createCategory(
+                parentId,
+                name = name
+            )
+        }
 
 }

@@ -1,6 +1,7 @@
 package ry.prioritizer.schema.mutations
 
 import com.expediagroup.graphql.server.operations.Mutation
+import kotlinx.coroutines.runBlocking
 import ry.prioritizer.PrioritizerApi
 import ry.prioritizer.schema.model.Item
 import javax.inject.Inject
@@ -17,11 +18,13 @@ class CreateItem @Inject constructor(
         price: Double,
         link: String
     ): Item? =
-        prioritizerApi.createItem(
-            categoryId = categoryId,
-            name = name,
-            price = price,
-            link = link
-        )
+        runBlocking {
+            prioritizerApi.createItem(
+                categoryId = categoryId,
+                name = name,
+                price = price,
+                link = link
+            )
+        }
 
 }
