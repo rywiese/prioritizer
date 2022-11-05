@@ -36,6 +36,20 @@ class PrioritizerHttpPlugin @Inject constructor(
                     call.respond(HttpStatusCode.NotFound)
                 }
             }
+            get("tree/{categoryId}") {
+                val categoryId: String = call.parameters["categoryId"]!!
+                val response: JsonNode? = prioritizerApi.getTree(categoryId)?.toJson()
+                if (response != null) {
+                    call.respondBytes(
+                        contentType = ContentType.Application.Json,
+                        status = HttpStatusCode.OK
+                    ) {
+                        objectMapper.writeValueAsBytes(response)
+                    }
+                } else {
+                    call.respond(HttpStatusCode.NotFound)
+                }
+            }
         }
     }
 
