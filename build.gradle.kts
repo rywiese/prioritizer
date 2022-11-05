@@ -1,5 +1,8 @@
+val ktorVersion = "2.1.2"
+
 plugins {
     kotlin("multiplatform") version "1.6.21"
+    kotlin("plugin.serialization") version "1.6.21"
     kotlin("kapt") version "1.7.20"
     application
 }
@@ -40,7 +43,7 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
+                //implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
                 implementation("com.google.dagger:dagger:2.44")
                 configurations["kapt"].dependencies.add(
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
@@ -49,8 +52,10 @@ kotlin {
                         "2.44"
                     )
                 )
-                implementation("io.ktor:ktor-server-netty:2.1.2")
-                implementation("io.ktor:ktor-server-html-builder:2.1.2")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-server-netty:$ktorVersion")
+                implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("org.neo4j.driver:neo4j-java-driver:4.4.9")
             }

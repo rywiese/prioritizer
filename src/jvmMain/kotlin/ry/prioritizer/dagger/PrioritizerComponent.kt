@@ -5,7 +5,6 @@ import dagger.Component
 import io.ktor.server.engine.ApplicationEngine
 import ry.prioritizer.ktor.KtorModule
 import ry.prioritizer.neo4j.Neo4JModule
-import ry.prioritizer.serialization.SerializationModule
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -13,8 +12,7 @@ import javax.inject.Singleton
 @Component(
     modules = [
         KtorModule::class,
-        Neo4JModule::class,
-        SerializationModule::class
+        Neo4JModule::class
     ]
 )
 interface PrioritizerComponent {
