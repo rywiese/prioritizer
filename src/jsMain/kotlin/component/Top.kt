@@ -28,7 +28,7 @@ val Top = FC { props: TopProps ->
                 .getRoot()
                 ?.also { root: Tree ->
                     statefulTree = root
-                    statefulChildren = root.children.toSet()
+                    statefulChildren = root.children
                 }
         }
     }
@@ -45,7 +45,7 @@ val Top = FC { props: TopProps ->
                             statefulGrandparent = statefulParent
                             statefulParent = currentTree.category
                             statefulTree = child
-                            statefulChildren = child.children.toSet()
+                            statefulChildren = child.children
                         }
                 }
             }
@@ -54,7 +54,7 @@ val Top = FC { props: TopProps ->
                     props.api
                         .getTree(categoryId = parentId)
                         ?.also { parent: Tree ->
-                            statefulChildren = parent.children.toSet()
+                            statefulChildren = parent.children
                             statefulTree = parent
                             statefulParent = statefulGrandparent
                             statefulGrandparent = null
@@ -62,5 +62,5 @@ val Top = FC { props: TopProps ->
                 }
             }
         }
-    } ?: div { +"oops" }
+    } ?: div { +"Not loaded... yet?" }
 }

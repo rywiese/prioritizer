@@ -42,7 +42,7 @@ object MockPrioritizerApi : PrioritizerApi {
     private data class TreeImpl(
         override val category: Category,
         override val queue: List<Item>,
-        override val children: List<TreeImpl>
+        override val children: Set<TreeImpl>
     ) : Tree {
 
         fun getSubtree(categoryId: String): Tree? =
@@ -58,7 +58,7 @@ object MockPrioritizerApi : PrioritizerApi {
             name = "Budget"
         ),
         queue = emptyList(),
-        children = listOf(
+        children = setOf(
             TreeImpl(
                 category = CategoryImpl(
                     id = "food",
@@ -84,7 +84,7 @@ object MockPrioritizerApi : PrioritizerApi {
                         link = "https://cub.com/rice"
                     )
                 ),
-                children = emptyList()
+                children = emptySet()
             ),
             TreeImpl(
                 category = CategoryImpl(
@@ -92,7 +92,7 @@ object MockPrioritizerApi : PrioritizerApi {
                     name = "Clothes"
                 ),
                 queue = emptyList(),
-                children = listOf(
+                children = setOf(
                     TreeImpl(
                         category = CategoryImpl(
                             id = "shoes",
@@ -118,7 +118,7 @@ object MockPrioritizerApi : PrioritizerApi {
                                 link = "https://mypillow.com/rudygs"
                             )
                         ),
-                        children = emptyList()
+                        children = emptySet()
                     ),
                     TreeImpl(
                         category = CategoryImpl(
@@ -139,7 +139,7 @@ object MockPrioritizerApi : PrioritizerApi {
                                 link = "https://nike.com/socks"
                             )
                         ),
-                        children = emptyList()
+                        children = emptySet()
                     )
                 )
             )
