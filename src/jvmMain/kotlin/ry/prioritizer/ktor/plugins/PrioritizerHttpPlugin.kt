@@ -7,7 +7,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import kotlinx.serialization.json.JsonElement
-import ry.prioritizer.PrioritizerApi
+import api.PrioritizerApi
 import ry.prioritizer.ktor.KtorPlugin
 import javax.inject.Inject
 import javax.inject.Singleton

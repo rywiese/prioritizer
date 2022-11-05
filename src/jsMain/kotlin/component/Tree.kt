@@ -4,6 +4,7 @@ import csstype.Display
 import csstype.FlexDirection
 import csstype.FlexGrow
 import csstype.vh
+import model.Category
 import model.Tree
 import react.FC
 import react.Props
@@ -12,6 +13,7 @@ import react.dom.html.ReactHTML.div
 
 external interface TreeProps : Props {
     var tree: Tree
+    var parent: Category?
     var children: Set<Tree>
     var onClickChild: (childId: String) -> Unit
     var onClickParent: (parentId: String) -> Unit
@@ -28,11 +30,11 @@ val Tree = FC { props: TreeProps ->
             css {
                 flexGrow = FlexGrow(1.0)
             }
-            props.tree.parentId?.let { parentId: String ->
+            props.parent?.let { parent: Category ->
                 Parent {
-                    name = parentId
+                    name = parent.name
                     onClick = {
-                        props.onClickParent(parentId)
+                        props.onClickParent(parent.id)
                     }
                 }
             } ?: Parent {
@@ -44,7 +46,7 @@ val Tree = FC { props: TreeProps ->
             css {
                 flexGrow = FlexGrow(4.0)
             }
-            +props.tree.name
+            +props.tree.category.name
             Queue {
                 items = props.tree.queue
             }

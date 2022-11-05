@@ -1,8 +1,8 @@
-package ry.prioritizer
+package api
 
-import ry.prioritizer.model.Category
-import ry.prioritizer.model.Item
-import ry.prioritizer.model.Tree
+import model.Category
+import model.Item
+import model.Tree
 
 interface PrioritizerApi {
 

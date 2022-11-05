@@ -1,6 +1,6 @@
 package ry.prioritizer.neo4j
 
-import ry.prioritizer.model.Tree
+import model.Tree
 
 internal data class Neo4JTree(
     override val category: Neo4JCategory,
