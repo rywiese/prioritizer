@@ -7,7 +7,7 @@ import model.Tree
 
 object MockPrioritizerApi : PrioritizerApi {
 
-    override suspend fun getRoot(): Tree? = budget
+    override suspend fun getRoot(): Tree = budget
 
     override suspend fun getTree(categoryId: String): Tree? = budget.getSubtree(categoryId)
 
