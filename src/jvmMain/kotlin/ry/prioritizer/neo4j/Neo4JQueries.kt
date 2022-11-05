@@ -105,9 +105,11 @@ internal object Neo4JQueries {
                 Neo4JTree(
                     category,
                     queue = getQueue(category.id)!!,
-                    children = getChildIds(category.id)!!.map { childId: String ->
-                        getTree(childId)!!
-                    }
+                    children = getChildIds(category.id)!!
+                        .map { childId: String ->
+                            getTree(childId)!!
+                        }
+                        .toSet()
                 )
             }
 
@@ -118,9 +120,11 @@ internal object Neo4JQueries {
             Neo4JTree(
                 category = category,
                 queue = getQueue(category.id)!!,
-                children = getChildIds(category.id)!!.map { childId: String ->
-                    getTree(childId)!!
-                }
+                children = getChildIds(category.id)!!
+                    .map { childId: String ->
+                        getTree(childId)!!
+                    }
+                    .toSet()
             )
         }
 
