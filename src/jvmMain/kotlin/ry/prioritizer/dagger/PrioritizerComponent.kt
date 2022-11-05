@@ -3,7 +3,6 @@ package ry.prioritizer.dagger
 import dagger.BindsInstance
 import dagger.Component
 import io.ktor.server.engine.ApplicationEngine
-import ry.prioritizer.graphql.GraphQLModule
 import ry.prioritizer.ktor.KtorModule
 import ry.prioritizer.neo4j.Neo4JModule
 import ry.prioritizer.serialization.SerializationModule
@@ -13,7 +12,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        GraphQLModule::class,
         KtorModule::class,
         Neo4JModule::class,
         SerializationModule::class

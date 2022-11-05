@@ -5,7 +5,6 @@ import dagger.Provides
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import ry.prioritizer.ktor.plugins.GraphQLPlugin
 import ry.prioritizer.ktor.plugins.PrioritizerHttpPlugin
 import ry.prioritizer.ktor.plugins.WebGuiPlugin
 import javax.inject.Named

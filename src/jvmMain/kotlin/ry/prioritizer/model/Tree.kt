@@ -1,11 +1,9 @@
 package ry.prioritizer.model
 
-import com.expediagroup.graphql.generator.annotations.GraphQLIgnore
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 
-@GraphQLIgnore
 interface Tree {
 
     val category: Category
