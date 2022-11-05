@@ -1,5 +1,4 @@
-import api.MockTreeApi
-import client.TreeClient
+import client.MockPrioritizerApi
 import component.Top
 import kotlinx.browser.document
 import react.create
@@ -10,8 +9,7 @@ fun main() {
     document.body!!.appendChild(container)
 
     val treeComponent = Top.create {
-        treeApi = MockTreeApi
-        treeClient = TreeClient
+        api = MockPrioritizerApi
     }
     render(treeComponent, container)
 }

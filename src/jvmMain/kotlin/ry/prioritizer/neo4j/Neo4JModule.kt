@@ -7,7 +7,7 @@ import org.neo4j.driver.AuthToken
 import org.neo4j.driver.AuthTokens
 import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
-import ry.prioritizer.PrioritizerApi
+import api.PrioritizerApi
 import javax.inject.Named
 import javax.inject.Singleton
 

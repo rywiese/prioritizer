@@ -1,6 +1,6 @@
 package ry.prioritizer.neo4j
 
-import ry.prioritizer.model.Category
+import model.Category
 
 internal data class Neo4JCategory(
     override val id: String,
