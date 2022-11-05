@@ -12,8 +12,7 @@ interface Tree {
 
     val queue: List<Item>
 
-    // TODO: Make this a Set.
-    val children: List<Tree>
+    val children: Set<Tree>
 
     fun toJson(): JsonElement = JsonObject(
         mapOf(
@@ -30,7 +29,7 @@ interface Tree {
         fun fromJson(json: JsonObject): Tree = object : Tree {
             override val category: Category = Category.fromJson(json["category"]!!)
             override val queue: List<Item> = json["queue"]!!.jsonArray.map { json -> Item.fromJson(json) }
-            override val children: List<Tree> = json["children"]!!.jsonArray.map { json -> Tree.fromJson(json) }
+            override val children: Set<Tree> = json["children"]!!.jsonArray.map { json -> Tree.fromJson(json) }.toSet()
         }
 
     }
