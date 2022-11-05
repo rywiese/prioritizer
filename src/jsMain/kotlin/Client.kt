@@ -1,4 +1,4 @@
-import client.MockPrioritizerApi
+import client.HttpPrioritizerClient
 import component.Top
 import kotlinx.browser.document
 import react.create
@@ -9,7 +9,7 @@ fun main() {
     document.body!!.appendChild(container)
 
     val treeComponent = Top.create {
-        api = MockPrioritizerApi
+        api = HttpPrioritizerClient
     }
     render(treeComponent, container)
 }

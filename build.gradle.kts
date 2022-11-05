@@ -1,4 +1,4 @@
-val ktorVersion = "2.1.2"
+val ktorVersion = "2.1.3"
 
 plugins {
     kotlin("multiplatform") version "1.6.21"
@@ -47,7 +47,6 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                //implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
                 implementation("com.google.dagger:dagger:2.44")
                 configurations["kapt"].dependencies.add(
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
@@ -66,6 +65,9 @@ kotlin {
         val jvmTest by getting
         val jsMain by getting {
             dependencies {
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.290-kotlin-1.6.10")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.290-kotlin-1.6.10")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-css:17.0.2-pre.290-kotlin-1.6.10")
