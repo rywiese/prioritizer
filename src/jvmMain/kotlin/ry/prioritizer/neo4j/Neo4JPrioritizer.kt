@@ -2,10 +2,10 @@ package ry.prioritizer.neo4j
 
 import org.neo4j.driver.Driver
 import org.neo4j.driver.Transaction
-import ry.prioritizer.PrioritizerApi
-import ry.prioritizer.model.Category
-import ry.prioritizer.model.Item
-import ry.prioritizer.model.Tree
+import api.PrioritizerApi
+import model.Category
+import model.Item
+import model.Tree
 import ry.prioritizer.neo4j.Neo4JQueries.createCategory
 import ry.prioritizer.neo4j.Neo4JQueries.createItem
 import ry.prioritizer.neo4j.Neo4JQueries.deleteCategory
