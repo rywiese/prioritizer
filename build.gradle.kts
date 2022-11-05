@@ -40,7 +40,6 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("com.expediagroup:graphql-kotlin-spring-server:6.2.5")
                 implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
                 implementation("com.google.dagger:dagger:2.44")
                 configurations["kapt"].dependencies.add(
