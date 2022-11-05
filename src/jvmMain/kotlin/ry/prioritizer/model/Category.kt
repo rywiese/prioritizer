@@ -1,7 +1,8 @@
 package ry.prioritizer.model
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 interface Category {
 
@@ -9,8 +10,11 @@ interface Category {
 
     val name: String
 
-    fun toJson(): JsonNode = JsonNodeFactory.instance.objectNode()
-        .put("id", id)
-        .put("name", name)
+    fun toJson(): JsonElement = JsonObject(
+        mapOf(
+            "id" to JsonPrimitive(id),
+            "name" to JsonPrimitive(name)
+        )
+    )
 
 }
