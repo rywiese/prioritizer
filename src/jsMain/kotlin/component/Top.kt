@@ -18,6 +18,7 @@ external interface TopProps : Props {
 val mainScope = MainScope()
 
 val Top = FC { props: TopProps ->
+    var statefulGrandparent: Category? by useState(null)
     var statefulParent: Category? by useState(null)
     var statefulTree: Tree? by useState(null)
     var statefulChildren: Set<Tree> by useState(emptySet())
@@ -41,6 +42,7 @@ val Top = FC { props: TopProps ->
                     props.api
                         .getTree(categoryId = childId)
                         ?.also { child: Tree ->
+                            statefulGrandparent = statefulParent
                             statefulParent = currentTree.category
                             statefulTree = child
                             statefulChildren = child.children.toSet()
@@ -52,9 +54,10 @@ val Top = FC { props: TopProps ->
                     props.api
                         .getTree(categoryId = parentId)
                         ?.also { parent: Tree ->
-                            statefulParent = null
-                            statefulTree = parent
                             statefulChildren = parent.children.toSet()
+                            statefulTree = parent
+                            statefulParent = statefulGrandparent
+                            statefulGrandparent = null
                         }
                 }
             }
