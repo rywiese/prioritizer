@@ -8,7 +8,6 @@ import org.neo4j.driver.async.AsyncSession
 import org.neo4j.driver.async.AsyncTransaction
 import org.neo4j.driver.async.ResultCursor
 
-
 suspend fun <T> AsyncSession.readTransactionSuspend(
     work: suspend (AsyncTransaction) -> T
 ): T =
