@@ -95,7 +95,9 @@ internal object Neo4JQueries {
                 item
             }
 
-    fun Transaction.getRoot(): Neo4JTree? =
+    fun Transaction.getRoot(
+        maxDepth: Int
+    ): Neo4JTree? =
         run("match (root:Category) where not ()-[:PARENT_OF]->(root) return root")
             .list()
             .firstOrNull()
@@ -105,24 +107,27 @@ internal object Neo4JQueries {
                 Neo4JTree(
                     category,
                     queue = getQueue(category.id)!!,
-                    children = getChildIds(category.id)!!
+                    children = if (maxDepth <= 0) emptySet()
+                    else getChildIds(category.id)!!
                         .map { childId: String ->
-                            getTree(childId)!!
+                            getTree(childId, maxDepth - 1)!!
                         }
                         .toSet()
                 )
             }
 
     fun Transaction.getTree(
-        categoryId: String
+        categoryId: String,
+        maxDepth: Int
     ): Neo4JTree? =
         getCategory(categoryId)?.let { category: Neo4JCategory ->
             Neo4JTree(
                 category = category,
                 queue = getQueue(category.id)!!,
-                children = getChildIds(category.id)!!
+                children = if (maxDepth <= 0) emptySet()
+                else getChildIds(category.id)!!
                     .map { childId: String ->
-                        getTree(childId)!!
+                        getTree(childId, maxDepth - 1)!!
                     }
                     .toSet()
             )

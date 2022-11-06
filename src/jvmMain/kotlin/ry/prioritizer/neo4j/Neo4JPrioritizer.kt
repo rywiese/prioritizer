@@ -1,11 +1,11 @@
 package ry.prioritizer.neo4j
 
-import org.neo4j.driver.Driver
-import org.neo4j.driver.Transaction
 import api.PrioritizerApi
 import model.Category
 import model.Item
 import model.Tree
+import org.neo4j.driver.Driver
+import org.neo4j.driver.Transaction
 import ry.prioritizer.neo4j.Neo4JQueries.createCategory
 import ry.prioritizer.neo4j.Neo4JQueries.createItem
 import ry.prioritizer.neo4j.Neo4JQueries.deleteCategory
@@ -20,16 +20,19 @@ class Neo4JPrioritizer @Inject constructor(
     private val neo4jDriver: Driver
 ) : PrioritizerApi {
 
-    override suspend fun getRoot(): Tree? =
+    override suspend fun getRoot(
+        maxDepth: Int
+    ): Tree? =
         neo4jDriver.session().readTransaction { transaction: Transaction ->
-            transaction.getRoot()
+            transaction.getRoot(maxDepth)
         }
 
     override suspend fun getTree(
-        categoryId: String
+        categoryId: String,
+        maxDepth: Int
     ): Tree? =
         neo4jDriver.session().readTransaction { transaction: Transaction ->
-            transaction.getTree(categoryId)
+            transaction.getTree(categoryId, maxDepth)
         }
 
     override suspend fun createCategory(

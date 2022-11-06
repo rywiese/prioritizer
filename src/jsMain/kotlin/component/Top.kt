@@ -25,7 +25,7 @@ val Top = FC { props: TopProps ->
     useEffectOnce {
         mainScope.launch {
             props.api
-                .getRoot()
+                .getRoot(maxDepth = 1)
                 ?.also { root: Tree ->
                     statefulTree = root
                     statefulChildren = root.children
@@ -40,7 +40,10 @@ val Top = FC { props: TopProps ->
             onClickChild = { childId: String ->
                 mainScope.launch {
                     props.api
-                        .getTree(categoryId = childId)
+                        .getTree(
+                            categoryId = childId,
+                            maxDepth = 1
+                        )
                         ?.also { child: Tree ->
                             statefulGrandparent = statefulParent
                             statefulParent = currentTree.category
@@ -52,7 +55,10 @@ val Top = FC { props: TopProps ->
             onClickParent = { parentId: String ->
                 mainScope.launch {
                     props.api
-                        .getTree(categoryId = parentId)
+                        .getTree(
+                            categoryId = parentId,
+                            maxDepth = 1
+                        )
                         ?.also { parent: Tree ->
                             statefulChildren = parent.children
                             statefulTree = parent
