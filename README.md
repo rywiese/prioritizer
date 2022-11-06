@@ -3,7 +3,7 @@ Prioritizer is a full-stack web-app to visualize and manage the priority of `Ite
 `Categories`.
 
 The underlying data structure is a tree of FIFO queues supporting the novel `promote` operation, whereby an element is
-popped from a queue of a child node and appended to the queue of the parent node.
+popped from the queue of a child node and appended to the queue of the parent node.
 
 Less formally, this is basically a generalized March Madness bracket.
 
