@@ -6,6 +6,7 @@ import model.Item
 import model.Tree
 import org.neo4j.driver.Driver
 import org.neo4j.driver.Transaction
+import org.neo4j.driver.async.AsyncTransaction
 import ry.prioritizer.neo4j.Neo4JQueries.createCategory
 import ry.prioritizer.neo4j.Neo4JQueries.createItem
 import ry.prioritizer.neo4j.Neo4JQueries.deleteCategory
@@ -23,7 +24,7 @@ class Neo4JPrioritizer @Inject constructor(
     override suspend fun getRoot(
         maxDepth: Int
     ): Tree? =
-        neo4jDriver.session().readTransaction { transaction: Transaction ->
+        neo4jDriver.asyncSession().readTransactionSuspend { transaction: AsyncTransaction ->
             transaction.getRoot(maxDepth)
         }
 
@@ -31,7 +32,7 @@ class Neo4JPrioritizer @Inject constructor(
         categoryId: String,
         maxDepth: Int
     ): Tree? =
-        neo4jDriver.session().readTransaction { transaction: Transaction ->
+        neo4jDriver.asyncSession().readTransactionSuspend { transaction: AsyncTransaction ->
             transaction.getTree(categoryId, maxDepth)
         }
 
