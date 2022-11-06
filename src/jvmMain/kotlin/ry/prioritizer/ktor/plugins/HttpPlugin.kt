@@ -2,8 +2,10 @@ package ry.prioritizer.ktor.plugins
 
 import io.ktor.server.application.Application
 import io.ktor.server.routing.get
+import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import ry.prioritizer.http.CreateSubcategoryHandler
 import ry.prioritizer.http.GetRootHandler
 import ry.prioritizer.http.GetTreeHandler
 import ry.prioritizer.ktor.KtorPlugin
@@ -13,7 +15,8 @@ import javax.inject.Singleton
 @Singleton
 class HttpPlugin @Inject constructor(
     private val getRootHandler: GetRootHandler,
-    private val getTreeHandler: GetTreeHandler
+    private val getTreeHandler: GetTreeHandler,
+    private val createSubcategoryHandler: CreateSubcategoryHandler
 ) : KtorPlugin() {
 
     override fun Application.configure() {
@@ -22,6 +25,9 @@ class HttpPlugin @Inject constructor(
                 get(getRootHandler)
                 route("{categoryId}") {
                     get(getTreeHandler)
+                    route("subcategory") {
+                        post(createSubcategoryHandler)
+                    }
                 }
             }
         }

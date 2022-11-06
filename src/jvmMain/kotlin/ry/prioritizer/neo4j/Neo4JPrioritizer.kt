@@ -36,7 +36,7 @@ class Neo4JPrioritizer @Inject constructor(
             transaction.getTree(categoryId, maxDepth)
         }
 
-    override suspend fun createCategory(
+    override suspend fun createSubcategory(
         parentId: String,
         name: String
     ): Category? =

@@ -10,7 +10,7 @@ interface PrioritizerApi {
 
     suspend fun getTree(categoryId: String, maxDepth: Int): Tree?
 
-    suspend fun createCategory(parentId: String, name: String): Category?
+    suspend fun createSubcategory(parentId: String, name: String): Category?
 
     suspend fun deleteCategory(categoryId: String): String?
 
