@@ -23,8 +23,10 @@ object HttpPrioritizerClient : PrioritizerApi {
         }
     }
 
-    override suspend fun getRoot(): Tree? =
-        client.get("http://localhost:8080/tree")
+    override suspend fun getRoot(
+        maxDepth: Int
+    ): Tree? =
+        client.get("http://localhost:8080/tree?maxDepth=$maxDepth")
             .takeIf { httpResponse: HttpResponse ->
                 httpResponse.status == HttpStatusCode.OK
             }
@@ -33,8 +35,11 @@ object HttpPrioritizerClient : PrioritizerApi {
                 Tree.fromJson(jsonElement)
             }
 
-    override suspend fun getTree(categoryId: String): Tree? =
-        client.get("http://localhost:8080/tree/$categoryId")
+    override suspend fun getTree(
+        categoryId: String,
+        maxDepth: Int
+    ): Tree? =
+        client.get("http://localhost:8080/tree/$categoryId?maxDepth=$maxDepth")
             .takeIf { httpResponse: HttpResponse ->
                 httpResponse.status == HttpStatusCode.OK
             }

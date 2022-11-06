@@ -6,9 +6,9 @@ import model.Tree
 
 interface PrioritizerApi {
 
-    suspend fun getRoot(): Tree?
+    suspend fun getRoot(maxDepth: Int): Tree?
 
-    suspend fun getTree(categoryId: String): Tree?
+    suspend fun getTree(categoryId: String, maxDepth: Int): Tree?
 
     suspend fun createCategory(parentId: String, name: String): Category?
 
