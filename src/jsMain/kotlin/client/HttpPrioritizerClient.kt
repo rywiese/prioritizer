@@ -5,6 +5,7 @@ import http.CreateSubcategoryRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.js.Js
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
@@ -76,9 +77,15 @@ object HttpPrioritizerClient : PrioritizerApi {
             }
             ?.bodyFromJson(categorySerializer)
 
-    override suspend fun deleteCategory(categoryId: String): String? {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deleteCategory(
+        categoryId: String
+    ): String? =
+        client.delete("$apiUrl/tree/$categoryId")
+            .takeIf { httpResponse: HttpResponse ->
+                httpResponse.status == HttpStatusCode.OK
+            }
+            ?.bodyFromJson(categorySerializer)
+            ?.id
 
     override suspend fun createItem(categoryId: String, name: String, price: Double, link: String): Item? {
         TODO("Not yet implemented")
