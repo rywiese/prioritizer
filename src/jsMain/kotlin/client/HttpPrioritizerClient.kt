@@ -2,7 +2,6 @@ package client
 
 import api.PrioritizerApi
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.engine.js.Js
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
@@ -10,11 +9,16 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
+import ktor.bodyFromJson
 import model.Category
 import model.Item
 import model.Tree
+import serialization.CategorySerializer
+import serialization.ComposedJsonArraySerializer
+import serialization.ItemSerializer
+import serialization.TreeSerializer
 
+// TODO: DI
 object HttpPrioritizerClient : PrioritizerApi {
 
     private val client = HttpClient(Js) {
@@ -23,6 +27,11 @@ object HttpPrioritizerClient : PrioritizerApi {
         }
     }
 
+    private val treeSerializer = TreeSerializer(
+        categorySerializer = CategorySerializer,
+        queueSerializer = ComposedJsonArraySerializer(ItemSerializer)
+    )
+
     override suspend fun getRoot(
         maxDepth: Int
     ): Tree? =
@@ -30,10 +39,7 @@ object HttpPrioritizerClient : PrioritizerApi {
             .takeIf { httpResponse: HttpResponse ->
                 httpResponse.status == HttpStatusCode.OK
             }
-            ?.body<JsonElement>()
-            ?.let { jsonElement: JsonElement ->
-                Tree.fromJson(jsonElement)
-            }
+            ?.bodyFromJson(treeSerializer)
 
     override suspend fun getTree(
         categoryId: String,
@@ -43,10 +49,7 @@ object HttpPrioritizerClient : PrioritizerApi {
             .takeIf { httpResponse: HttpResponse ->
                 httpResponse.status == HttpStatusCode.OK
             }
-            ?.body<JsonElement>()
-            ?.let { jsonElement: JsonElement ->
-                Tree.fromJson(jsonElement)
-            }
+            ?.bodyFromJson(treeSerializer)
 
     override suspend fun createCategory(parentId: String, name: String): Category? {
         TODO("Not yet implemented")
