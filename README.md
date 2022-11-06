@@ -1,4 +1,4 @@
-# prioritizer
+# Prioritizer
 Prioritizer is a full-stack web-app to visualize and manage the priority of `Items` from different (and possibly nested)
 `Categories`.
 
