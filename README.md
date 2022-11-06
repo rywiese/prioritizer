@@ -11,9 +11,9 @@ Right now, the `Categories` are budgets and the `Items` are products that fit wi
 budgeting use case is MVPed, we hope to make the app more extensible by supporting generic `Items` and `Categories`
 defined in plugins.
 
-## Running locally
+# Running locally
 
-### Clone
+## Clone
 Clone the repo with
 ```
 git clone https://github.com/rywiese/prioritizer.git
@@ -26,10 +26,10 @@ git clone https://github.com/rywiese/prioritizer.git
 > 
 > Select the `Import project from external model` bubble and choose the `Gradle` option in the dropdown.
 
-### Infrastructure
+## Infrastructure
 Prioritizer requires a connection to a [Neo4J](https://neo4j.com/) database. You have a few options to set this up...
 
-#### AuraDB
+### AuraDB
 [AuraDB](https://neo4j.com/cloud/platform/aura-graph-database/) is Neo4J's cloud-hosted Neo4J service. This just means
 that the Neo4J _company_ will generously run the Neo4J _application_ on one of their servers, and give you a URI to
 connect with. If you'd rather run the Neo4J application on your own machine, see one of the other options below.
@@ -64,13 +64,13 @@ time later if you'd like a fresh start on your database. You can also follow
 [these instructions](https://neo4j.com/docs/aura/auradb/managing-databases/backup-restore-export/) to download your own
 `.dump` files to restore later.  
 
-#### Neo4J Desktop
+### Neo4J Desktop
 Running [Neo4J Desktop](https://neo4j.com/download/) has not been explored yet...
 
-#### Docker Compose
+### Docker Compose
 Running Neo4J with [Docker Compose](https://docs.docker.com/compose/) has not been explored yet...
 
-### Configure
+## Configure
 Prioritizer is configured by the following environment variables. See
 [the earlier section on configuring Neo4J](#infrastructure) to find these values. If you are using IntelliJ, sit tight.
 You will add these variables to your run configuration in [the next section](#run).
@@ -80,7 +80,7 @@ export NEO4J_USERNAME=<neo4j_username>
 export NEO4J_PASSWORD=<neo4j_password>
 ```
 
-### Run
+## Run
 Once the above environments variables are set, you can run the app with
 ```
 ./gradlew run
@@ -89,6 +89,6 @@ Once the above environments variables are set, you can run the app with
 > **_TIP:_**  If you are using IntelliJ, you can set this command and all environment variables in a
 > [run configuration](https://www.jetbrains.com/help/idea/run-debug-gradle.html).
 
-### Use
+## Use
 Once the app is running, navigate to `http://localhost:8080` in your browser to interact with the GUI. The backend REST
 API is available on this endpoint as well, though it is not documented yet.
