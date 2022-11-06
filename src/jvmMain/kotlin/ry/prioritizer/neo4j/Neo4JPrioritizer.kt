@@ -40,14 +40,14 @@ class Neo4JPrioritizer @Inject constructor(
         parentId: String,
         name: String
     ): Category? =
-        neo4jDriver.session().writeTransaction { transaction: Transaction ->
+        neo4jDriver.asyncSession().writeTransactionSuspend { transaction: AsyncTransaction ->
             transaction.createCategory(parentId, name)
         }
 
     override suspend fun deleteCategory(
         categoryId: String
     ): String =
-        neo4jDriver.session().writeTransaction { transaction: Transaction ->
+        neo4jDriver.asyncSession().writeTransactionSuspend { transaction: AsyncTransaction ->
             // TODO: figure out how to return `null` if not found.
             transaction.deleteCategory(categoryId).let { categoryId }
         }
