@@ -17,22 +17,21 @@ internal object Neo4JQueries {
             ?.get("category")
             ?.let(CategoryParser::parse)
 
-    fun Transaction.createCategory(
+    suspend fun AsyncTransaction.createCategory(
         parentId: String,
         name: String
     ): Neo4JCategory? =
-        run("match (parent) where ID(parent)=$parentId create (parent)-[:PARENT_OF]->(new:Category{name:\"$name\"}) return new")
-            .list()
+        runList("match (parent) where ID(parent)=$parentId create (parent)-[:PARENT_OF]->(new:Category{name:\"$name\"}) return new")
             .firstOrNull()
             ?.get("new")
             ?.let(CategoryParser::parse)
 
-    fun Transaction.deleteCategory(
+    suspend fun AsyncTransaction.deleteCategory(
         categoryId: String
     ) {
         getChildIds(categoryId)
             ?.also {
-                run("match (category:Category)-[*0..]->(child) where ID(category)=$categoryId detach delete child")
+                runList("match (category:Category)-[*0..]->(child) where ID(category)=$categoryId detach delete child")
             }
             ?.map { childId: String ->
                 deleteCategory(childId)
@@ -165,15 +164,6 @@ internal object Neo4JQueries {
     ): Set<String>? =
         runList("match (category:Category) -[:PARENT_OF]-> (child) where ID(category)=$categoryId return category, child")
             .map { record: Record ->
-                record["child"].asNode().id().toString()
-            }
-            .toSet()
-
-    fun Transaction.getChildIds(
-        categoryId: String
-    ): Set<String>? =
-        run("match (category:Category) -[:PARENT_OF]-> (child) where ID(category)=$categoryId return category, child")
-            .list { record: Record ->
                 record["child"].asNode().id().toString()
             }
             .toSet()

@@ -19,6 +19,17 @@ suspend fun <T> AsyncSession.readTransactionSuspend(
         }.await()
     }
 
+suspend fun <T> AsyncSession.writeTransactionSuspend(
+    work: suspend (AsyncTransaction) -> T
+): T =
+    coroutineScope {
+        writeTransactionAsync { asyncTransaction: AsyncTransaction ->
+            future {
+                work(asyncTransaction)
+            }
+        }.await()
+    }
+
 suspend fun AsyncTransaction.runList(
     query: String
 ): List<Record> =
