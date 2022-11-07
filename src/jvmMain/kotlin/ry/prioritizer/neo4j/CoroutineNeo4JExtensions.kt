@@ -30,9 +30,19 @@ suspend fun <T> AsyncSession.writeTransactionSuspend(
         }.await()
     }
 
-suspend fun AsyncTransaction.runList(
+suspend fun AsyncTransaction.runSuspend(
+    query: String
+): ResultCursor =
+    runAsync(query).await()
+
+suspend fun AsyncTransaction.runSuspendList(
     query: String
 ): List<Record> =
     runAsync(query)
         .thenCompose(ResultCursor::listAsync)
         .await()
+
+suspend fun AsyncTransaction.runSuspendSingle(
+    query: String
+): Record? =
+    runSuspendList(query).firstOrNull()

@@ -6,7 +6,6 @@ import model.Category
 import model.Item
 import model.Tree
 import org.neo4j.driver.Driver
-import org.neo4j.driver.Transaction
 import org.neo4j.driver.async.AsyncTransaction
 import ry.prioritizer.neo4j.Neo4JQueries.createCategory
 import ry.prioritizer.neo4j.Neo4JQueries.createItem
@@ -57,7 +56,7 @@ class Neo4JPrioritizer @Inject constructor(
         categoryId: String,
         createItemRequest: CreateItemRequest
     ): Item? =
-        neo4jDriver.session().writeTransaction { transaction: Transaction ->
+        neo4jDriver.asyncSession().writeTransactionSuspend { transaction: AsyncTransaction ->
             transaction.createItem(
                 categoryId = categoryId,
                 name = createItemRequest.name,
@@ -69,7 +68,7 @@ class Neo4JPrioritizer @Inject constructor(
     override suspend fun popItem(
         categoryId: String
     ): Item? =
-        neo4jDriver.session().writeTransaction { transaction: Transaction ->
+        neo4jDriver.asyncSession().writeTransactionSuspend { transaction: AsyncTransaction ->
             transaction.popItem(categoryId)
         }
 
