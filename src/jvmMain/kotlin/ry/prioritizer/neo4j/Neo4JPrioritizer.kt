@@ -1,6 +1,7 @@
 package ry.prioritizer.neo4j
 
 import api.PrioritizerApi
+import http.CreateItemRequest
 import model.Category
 import model.Item
 import model.Tree
@@ -54,16 +55,14 @@ class Neo4JPrioritizer @Inject constructor(
 
     override suspend fun createItem(
         categoryId: String,
-        name: String,
-        price: Double,
-        link: String
+        createItemRequest: CreateItemRequest
     ): Item? =
         neo4jDriver.session().writeTransaction { transaction: Transaction ->
             transaction.createItem(
                 categoryId = categoryId,
-                name = name,
-                price = price,
-                link = link
+                name = createItemRequest.name,
+                price = createItemRequest.price,
+                link = createItemRequest.link
             )
         }
 

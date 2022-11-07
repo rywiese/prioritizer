@@ -2,12 +2,14 @@ package ry.prioritizer.serialization
 
 import dagger.Module
 import dagger.Provides
+import http.CreateItemRequest
 import http.CreateSubcategoryRequest
 import model.Category
 import model.Item
 import model.Tree
 import serialization.CategorySerializer
 import serialization.ComposedJsonArraySerializer
+import serialization.CreateItemRequestSerializer
 import serialization.CreateSubcategoryRequestSerializer
 import serialization.ItemSerializer
 import serialization.JsonSerializer
@@ -47,5 +49,10 @@ object SerializationModule {
     @Singleton
     fun provideCreateSubcategoryRequestSerializer(): JsonSerializer<CreateSubcategoryRequest> =
         CreateSubcategoryRequestSerializer
+
+    @Provides
+    @Singleton
+    fun provideCreateItemRequestSerializer(): JsonSerializer<CreateItemRequest> =
+        CreateItemRequestSerializer
 
 }
