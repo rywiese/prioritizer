@@ -81,7 +81,7 @@ object HttpPrioritizerClient : PrioritizerApi {
         createSubcategoryRequest: CreateSubcategoryRequest
     ): Category? =
         client
-            .post("$apiUrl/tree/$parentId/subcategory") {
+            .post("$apiUrl/tree/$parentId/subcategories") {
                 setJsonBody(
                     body = createSubcategoryRequest,
                     createSubcategoryRequestSerializer

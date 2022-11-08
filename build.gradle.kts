@@ -4,6 +4,7 @@ plugins {
     kotlin("multiplatform") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
     kotlin("kapt") version "1.7.20"
+    id("org.openapi.generator") version "6.2.1"
     application
 }
 
@@ -60,6 +61,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("org.neo4j.driver:neo4j-java-driver:4.4.9")
+                implementation("org.openapitools:openapi-generator-gradle-plugin:6.2.1")
             }
         }
         val jvmTest by getting
@@ -90,4 +92,9 @@ tasks.named<Copy>("jvmProcessResources") {
 tasks.named<JavaExec>("run") {
     dependsOn(tasks.named<Jar>("jvmJar"))
     classpath(tasks.named<Jar>("jvmJar"))
+}
+
+openApiValidate {
+    inputSpec.set("src/jvmMain/resources/PrioritizerApi.yaml")
+    recommend.set(true)
 }

@@ -18,7 +18,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class HttpPlugin @Inject constructor(
+class RestPlugin @Inject constructor(
     private val getRootHandler: GetRootHandler,
     private val getTreeHandler: GetTreeHandler,
     private val deleteCategoryHandler: DeleteCategoryHandler,
@@ -34,7 +34,7 @@ class HttpPlugin @Inject constructor(
                 route("{categoryId}") {
                     get(getTreeHandler)
                     delete(deleteCategoryHandler)
-                    route("subcategory") {
+                    route("subcategories") {
                         post(createSubcategoryHandler)
                     }
                     route("items") {

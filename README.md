@@ -91,4 +91,4 @@ Once the above environments variables are set, you can run the app with
 
 ## Use
 Once the app is running, navigate to `http://localhost:8080` in your browser to interact with the GUI. The backend REST
-API is available on this endpoint as well, though it is not documented yet.
+API, [documented here](src/jvmMain/resources/PrioritizerApi.yaml), is available on this endpoint as well.
