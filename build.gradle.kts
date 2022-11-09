@@ -94,7 +94,14 @@ tasks.named<JavaExec>("run") {
     classpath(tasks.named<Jar>("jvmJar"))
 }
 
+val openApiInputSpec = "src/jvmMain/resources/PrioritizerApi.yaml"
+
 openApiValidate {
-    inputSpec.set("src/jvmMain/resources/PrioritizerApi.yaml")
+    inputSpec.set(openApiInputSpec)
     recommend.set(true)
+}
+
+openApiGenerate {
+    inputSpec.set(openApiInputSpec)
+    generatorName.set("kotlin")
 }

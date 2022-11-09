@@ -157,5 +157,4 @@ components:
         queue:
           type: array
           items:
-            type: object
             $ref: '#/components/schemas/Item'
