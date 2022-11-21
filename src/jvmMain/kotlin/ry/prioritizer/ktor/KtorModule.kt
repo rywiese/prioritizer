@@ -7,6 +7,7 @@ import io.ktor.server.application.install
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import ry.prioritizer.ktor.plugins.RestPlugin
 import ry.prioritizer.ktor.plugins.WebGuiPlugin
@@ -25,6 +26,7 @@ object KtorModule {
         restPlugin: RestPlugin
     ): ApplicationEngine =
         embeddedServer(Netty, port = port, host = host) {
+            install(CallLogging)
             install(ContentNegotiation) {
                 json()
             }
