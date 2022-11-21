@@ -56,9 +56,10 @@ kotlin {
                         "2.44"
                     )
                 )
+                implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
                 implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-server-netty:$ktorVersion")
                 implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
+                implementation("io.ktor:ktor-server-netty:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("org.neo4j.driver:neo4j-java-driver:4.4.9")
                 implementation("org.openapitools:openapi-generator-gradle-plugin:6.2.1")
