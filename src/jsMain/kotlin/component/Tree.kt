@@ -21,7 +21,8 @@ external interface TreeProps : Props {
     var children: Set<Tree>
     var onClickChild: (childId: String) -> Unit
     var onClickParent: (parentId: String) -> Unit
-    var createNewItem: (categoryId: String, CreateItemRequest) -> Unit
+    var createItem: (categoryId: String, CreateItemRequest) -> Unit
+    var createSubcategory: (parentId: String, categoryName: String) -> Unit
 }
 
 val Tree = FC { props: TreeProps ->
@@ -55,8 +56,8 @@ val Tree = FC { props: TreeProps ->
             +props.category.name
             Queue {
                 items = props.queue
-                createNewItem = { createItemRequest: CreateItemRequest ->
-                    props.createNewItem(
+                createItem = { createItemRequest: CreateItemRequest ->
+                    props.createItem(
                         props.category.id,
                         createItemRequest
                     )
@@ -70,6 +71,12 @@ val Tree = FC { props: TreeProps ->
             Children {
                 children = props.children
                 onClickChild = props.onClickChild
+                createSubcategory = { subCategoryName: String ->
+                    props.createSubcategory(
+                        props.category.id,
+                        subCategoryName
+                    )
+                }
             }
         }
     }

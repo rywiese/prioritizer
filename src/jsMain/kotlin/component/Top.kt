@@ -74,12 +74,28 @@ val Top = FC { props: TopProps ->
                         }
                 }
             }
-            createNewItem = { categoryId: String, createItemRequest: CreateItemRequest ->
+            createItem = { categoryId: String, createItemRequest: CreateItemRequest ->
                 mainScope.launch {
                     props.api
                         .createItem(categoryId, createItemRequest)
                         ?.also { item: Item ->
                             statefulQueue = statefulQueue + item
+                        }
+                }
+            }
+            createSubcategory = { parentId: String, name: String ->
+                mainScope.launch {
+                    props.api
+                        .createSubcategory(
+                            parentId = parentId,
+                            name = name
+                        )
+                        ?.also { category: Category ->
+                            statefulChildren = statefulChildren + object : Tree {
+                                override val category: Category = category
+                                override val queue: List<Item> = emptyList()
+                                override val children: Set<Tree> = emptySet()
+                            }
                         }
                 }
             }

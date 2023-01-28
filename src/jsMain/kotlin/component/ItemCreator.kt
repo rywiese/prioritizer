@@ -8,14 +8,13 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.p
 
 external interface ItemCreatorProps : Props {
-    var label: String
     var createItem: (CreateItemRequest) -> Unit
 }
 
 val ItemCreator = FC { props: ItemCreatorProps ->
     div {
         p {
-            +"Create new ${props.label} +"
+            +"Create new item +"
         }
         onClick = {
             window.prompt("Enter item name")?.let { name: String ->
