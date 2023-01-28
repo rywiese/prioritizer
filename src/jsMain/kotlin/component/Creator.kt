@@ -1,20 +1,38 @@
 package component
 
+import http.CreateItemRequest
+import kotlinx.browser.window
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.p
 
-external interface CreatorProps : Props {
+external interface ItemCreatorProps : Props {
     var label: String
-    var onClick: () -> Unit
+    var createItem: (CreateItemRequest) -> Unit
 }
 
-val Creator = FC { props: CreatorProps ->
+val ItemCreator = FC { props: ItemCreatorProps ->
     div {
         p {
             +"Create new ${props.label} +"
         }
-        onClick = { props.onClick() }
+        onClick = {
+            window.prompt("Enter item name")?.let { name: String ->
+                window.prompt("Enter item price")
+                    ?.toDouble()
+                    ?.let { price: Double ->
+                        window.prompt("Enter item link")?.let { link: String ->
+                            props.createItem(
+                                CreateItemRequest(
+                                    name = name,
+                                    price,
+                                    link = link
+                                )
+                            )
+                        }
+                    }
+            }
+        }
     }
 }
