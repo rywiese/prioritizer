@@ -3,6 +3,7 @@ package component
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.p
 
 external interface ParentProps : Props {
     var name: String
@@ -11,7 +12,9 @@ external interface ParentProps : Props {
 
 val Parent = FC { props: ParentProps ->
     div {
-        +props.name
+        p {
+            +props.name
+        }
         onClick = { props.onClick() }
     }
 }

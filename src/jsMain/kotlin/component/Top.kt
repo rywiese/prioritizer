@@ -51,7 +51,7 @@ val Top = FC { props: TopProps ->
                         )
                         ?.also { child: Tree ->
                             statefulGrandparent = statefulParent
-                            statefulParent = category
+                            statefulParent = statefulCategory
                             statefulCategory = child.category
                             statefulQueue = child.queue.toMutableList()
                             statefulChildren = child.children
