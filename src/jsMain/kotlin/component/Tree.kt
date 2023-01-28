@@ -55,14 +55,10 @@ val Tree = FC { props: TreeProps ->
             +props.category.name
             Queue {
                 items = props.queue
-                createNewItem = {
+                createNewItem = { createItemRequest: CreateItemRequest ->
                     props.createNewItem(
                         props.category.id,
-                        CreateItemRequest(
-                            name = "TODO",
-                            price = 69.0,
-                            link = "figurethis.out/todo"
-                        )
+                        createItemRequest
                     )
                 }
             }
