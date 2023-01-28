@@ -3,8 +3,11 @@ package component
 import csstype.Display
 import csstype.FlexDirection
 import csstype.FlexGrow
+import csstype.TextAlign
 import csstype.vh
+import http.CreateItemRequest
 import model.Category
+import model.Item
 import model.Tree
 import react.FC
 import react.Props
@@ -12,11 +15,13 @@ import react.css.css
 import react.dom.html.ReactHTML.div
 
 external interface TreeProps : Props {
-    var tree: Tree
     var parent: Category?
+    var category: Category
+    var queue: List<Item>
     var children: Set<Tree>
     var onClickChild: (childId: String) -> Unit
     var onClickParent: (parentId: String) -> Unit
+    var createNewItem: (categoryId: String, CreateItemRequest) -> Unit
 }
 
 val Tree = FC { props: TreeProps ->
@@ -25,6 +30,7 @@ val Tree = FC { props: TreeProps ->
             display = Display.flex
             flexDirection = FlexDirection.row
             height = 100.vh
+            textAlign = TextAlign.center
         }
         div {
             css {
@@ -46,9 +52,19 @@ val Tree = FC { props: TreeProps ->
             css {
                 flexGrow = FlexGrow(4.0)
             }
-            +props.tree.category.name
+            +props.category.name
             Queue {
-                items = props.tree.queue
+                items = props.queue
+                createNewItem = {
+                    props.createNewItem(
+                        props.category.id,
+                        CreateItemRequest(
+                            name = "TODO",
+                            price = 69.0,
+                            link = "figurethis.out/todo"
+                        )
+                    )
+                }
             }
         }
         div {

@@ -14,6 +14,7 @@ import react.dom.html.ReactHTML.div
 
 external interface QueueProps : Props {
     var items: List<Item>
+    var createNewItem: () -> Unit
 }
 
 val Queue = FC { props: QueueProps ->
@@ -35,5 +36,15 @@ val Queue = FC { props: QueueProps ->
                 }
             }
         } ?: div { +"Nothing here yet!" }
+        div {
+            css {
+                flexGrow = FlexGrow(1.0)
+                padding = 25.px
+            }
+            Creator {
+                label = "item"
+                onClick = props.createNewItem
+            }
+        }
     }
 }
