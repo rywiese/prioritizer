@@ -21,5 +21,6 @@ val Item = FC<ItemProps> { props: ItemProps ->
         p {
             +"Link: ${props.item.link}"
         }
+        onDoubleClick = {}
     }
 }
