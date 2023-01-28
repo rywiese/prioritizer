@@ -15,7 +15,7 @@ import react.dom.html.ReactHTML.div
 
 external interface QueueProps : Props {
     var items: List<Item>
-    var createNewItem: (CreateItemRequest) -> Unit
+    var createItem: (CreateItemRequest) -> Unit
 }
 
 val Queue = FC { props: QueueProps ->
@@ -43,8 +43,7 @@ val Queue = FC { props: QueueProps ->
                 padding = 25.px
             }
             ItemCreator {
-                label = "item"
-                createItem = props.createNewItem
+                createItem = props.createItem
             }
         }
     }

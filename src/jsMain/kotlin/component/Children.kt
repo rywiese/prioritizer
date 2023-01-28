@@ -15,6 +15,7 @@ import react.dom.html.ReactHTML.div
 external interface ChildrenProps : Props {
     var children: Set<Tree>
     var onClickChild: (childId: String) -> Unit
+    var createSubcategory: (subCategoryName: String) -> Unit
 }
 
 val Children = FC { props: ChildrenProps ->
@@ -36,6 +37,15 @@ val Children = FC { props: ChildrenProps ->
                     firstItemOrNull = child.queue.firstOrNull()
                     onClick = { props.onClickChild(child.category.id) }
                 }
+            }
+        }
+        div {
+            css {
+                flexGrow = FlexGrow(1.0)
+                padding = 25.px
+            }
+            CategoryCreator {
+                createCategory = props.createSubcategory
             }
         }
     }
