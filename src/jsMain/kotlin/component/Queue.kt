@@ -42,7 +42,7 @@ val Queue = FC { props: QueueProps ->
                 flexGrow = FlexGrow(1.0)
                 padding = 25.px
             }
-            ItemCreator {
+            CreateItemButton {
                 createItem = props.createItem
             }
         }
