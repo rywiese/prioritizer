@@ -6,6 +6,7 @@ import csstype.FlexGrow
 import csstype.JustifyContent
 import csstype.pct
 import csstype.px
+import model.Category
 import model.Tree
 import react.FC
 import react.Props
@@ -14,9 +15,9 @@ import react.dom.html.ReactHTML.div
 
 external interface ChildrenProps : Props {
     var children: Set<Tree>
-    var onClickChild: (childId: String) -> Unit
+    var onClickChild: (child: Tree) -> Unit
     var createSubcategory: (subCategoryName: String) -> Unit
-    var deleteCategory: (categoryId: String) -> Unit
+    var deleteCategory: (Category) -> Unit
 }
 
 val Children = FC { props: ChildrenProps ->
@@ -36,7 +37,7 @@ val Children = FC { props: ChildrenProps ->
                 Child {
                     category = child.category
                     firstItemOrNull = child.queue.firstOrNull()
-                    onClick = { props.onClickChild(child.category.id) }
+                    onClick = { props.onClickChild(child) }
                     deleteCategory = props.deleteCategory
                 }
             }
@@ -46,7 +47,7 @@ val Children = FC { props: ChildrenProps ->
                 flexGrow = FlexGrow(1.0)
                 padding = 25.px
             }
-            CategoryCreator {
+            CreateCategoryButton {
                 createCategory = props.createSubcategory
             }
         }

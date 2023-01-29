@@ -19,11 +19,11 @@ external interface TreeProps : Props {
     var category: Category
     var queue: List<Item>
     var children: Set<Tree>
-    var onClickChild: (childId: String) -> Unit
+    var onClickChild: (Tree) -> Unit
     var onClickParent: (parentId: String) -> Unit
     var createItem: (categoryId: String, CreateItemRequest) -> Unit
     var createSubcategory: (parentId: String, categoryName: String) -> Unit
-    var deleteCategory: (categoryId: String) -> Unit
+    var deleteCategory: (Category) -> Unit
 }
 
 val Tree = FC { props: TreeProps ->

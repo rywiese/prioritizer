@@ -42,11 +42,11 @@ val Top = FC { props: TopProps ->
             queue = statefulQueue
             parent = statefulParent
             children = statefulChildren
-            onClickChild = { childId: String ->
+            onClickChild = { child: Tree ->
                 mainScope.launch {
                     props.api
                         .getTree(
-                            categoryId = childId,
+                            categoryId = child.category.id,
                             maxDepth = 1
                         )
                         ?.also { child: Tree ->
@@ -99,10 +99,10 @@ val Top = FC { props: TopProps ->
                         }
                 }
             }
-            deleteCategory = { categoryId: String ->
+            deleteCategory = { category: Category ->
                 mainScope.launch {
                     props.api
-                        .deleteCategory(categoryId)
+                        .deleteCategory(category.id)
                         ?.also { deletedCategoryId: String ->
                             statefulChildren
                                 .find { child: Tree ->

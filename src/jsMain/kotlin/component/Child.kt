@@ -11,7 +11,7 @@ external interface ChildProps : Props {
     var category: Category
     var firstItemOrNull: Item?
     var onClick: () -> Unit
-    var deleteCategory: (categoryId: String) -> Unit
+    var deleteCategory: (Category) -> Unit
 }
 
 val Child = FC { props: ChildProps ->
@@ -27,7 +27,7 @@ val Child = FC { props: ChildProps ->
     button {
         +"Delete"
         onClick = {
-            props.deleteCategory(props.category.id)
+            props.deleteCategory(props.category)
         }
     }
 }
