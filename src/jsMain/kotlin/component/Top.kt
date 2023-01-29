@@ -99,6 +99,21 @@ val Top = FC { props: TopProps ->
                         }
                 }
             }
+            deleteCategory = { categoryId: String ->
+                mainScope.launch {
+                    props.api
+                        .deleteCategory(categoryId)
+                        ?.also { deletedCategoryId: String ->
+                            statefulChildren
+                                .find { child: Tree ->
+                                    child.category.id == deletedCategoryId
+                                }
+                                ?.let { childToDelete: Tree ->
+                                    statefulChildren = statefulChildren - childToDelete
+                                }
+                        }
+                }
+            }
         }
     } ?: div { +"Not loaded... yet?" }
 }

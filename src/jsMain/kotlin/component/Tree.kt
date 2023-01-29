@@ -23,6 +23,7 @@ external interface TreeProps : Props {
     var onClickParent: (parentId: String) -> Unit
     var createItem: (categoryId: String, CreateItemRequest) -> Unit
     var createSubcategory: (parentId: String, categoryName: String) -> Unit
+    var deleteCategory: (categoryId: String) -> Unit
 }
 
 val Tree = FC { props: TreeProps ->
@@ -77,6 +78,7 @@ val Tree = FC { props: TreeProps ->
                         subCategoryName
                     )
                 }
+                deleteCategory = props.deleteCategory
             }
         }
     }

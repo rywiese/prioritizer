@@ -16,6 +16,7 @@ external interface ChildrenProps : Props {
     var children: Set<Tree>
     var onClickChild: (childId: String) -> Unit
     var createSubcategory: (subCategoryName: String) -> Unit
+    var deleteCategory: (categoryId: String) -> Unit
 }
 
 val Children = FC { props: ChildrenProps ->
@@ -33,9 +34,10 @@ val Children = FC { props: ChildrenProps ->
                     padding = 25.px
                 }
                 Child {
-                    name = child.category.name
+                    category = child.category
                     firstItemOrNull = child.queue.firstOrNull()
                     onClick = { props.onClickChild(child.category.id) }
+                    deleteCategory = props.deleteCategory
                 }
             }
         }
