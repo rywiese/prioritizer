@@ -5,6 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.neo4j.driver.Record
 import org.neo4j.driver.async.AsyncTransaction
+import org.neo4j.driver.async.ResultCursor
 
 internal object Neo4JQueries {
 
@@ -71,6 +72,27 @@ internal object Neo4JQueries {
                         runSuspend("match (category:Category)-[:NEXT_ITEM]->(item:Item)-[:NEXT_ITEM]->(nextItem:Item) where ID(item)=${itemToPop.id} and ID(nextItem)=${nextItem.id} detach delete item create (category)-[:NEXT_ITEM]->(nextItem)")
                     }
                 }
+            }
+
+    suspend fun AsyncTransaction.deleteItem(
+        itemId: String
+    ): Neo4JItem? =
+        runSuspendList("match path=(pre)-[:NEXT_ITEM]->(item:Item)-[:NEXT_ITEM*0..1]->(post:Item) where ID(item)=$itemId return pre,item,post")
+            .map { record: Record ->
+                val item: Neo4JItem = ItemParser.parse(record["item"])
+                val postdecessor: Neo4JItem? = ItemParser.parse(record["post"]).takeIf { it.id != itemId }
+                if (postdecessor != null) Triple(1, item, suspend {
+                    runSuspend("match (pre)-[:NEXT_ITEM]->(item:Item)-[:NEXT_ITEM]->(post:Item) where ID(item)=$itemId detach delete item create (pre)-[:NEXT_ITEM]->(post)")
+                }) else Triple(3, item, suspend {
+                    runSuspend("match (item:Item) where ID(item)=$itemId detach delete item")
+                })
+            }
+            .minByOrNull { (priority: Int, _, _) ->
+                priority
+            }
+            ?.let { (_, item: Neo4JItem, deleteQuery: suspend () -> ResultCursor) ->
+                deleteQuery()
+                item
             }
 
     suspend fun AsyncTransaction.getQueue(

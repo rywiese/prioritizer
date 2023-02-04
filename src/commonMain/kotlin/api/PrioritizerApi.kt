@@ -20,4 +20,6 @@ interface PrioritizerApi {
     // TODO: distinguish between missing category vs empty queue
     suspend fun popItem(categoryId: String): Item?
 
+    suspend fun deleteItem(itemId: String): Item?
+
 }

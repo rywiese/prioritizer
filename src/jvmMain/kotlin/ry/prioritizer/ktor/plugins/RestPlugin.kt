@@ -10,6 +10,7 @@ import io.ktor.server.routing.routing
 import ry.prioritizer.http.CreateItemHandler
 import ry.prioritizer.http.CreateSubcategoryHandler
 import ry.prioritizer.http.DeleteCategoryHandler
+import ry.prioritizer.http.DeleteItemHandler
 import ry.prioritizer.http.GetRootHandler
 import ry.prioritizer.http.GetTreeHandler
 import ry.prioritizer.http.PopItemHandler
@@ -25,6 +26,7 @@ class RestPlugin @Inject constructor(
     private val createSubcategoryHandler: CreateSubcategoryHandler,
     private val createItemHandler: CreateItemHandler,
     private val popItemHandler: PopItemHandler,
+    private val deleteItemHandler: DeleteItemHandler,
 ) : KtorPlugin() {
 
     override fun Application.configure() {
@@ -41,6 +43,11 @@ class RestPlugin @Inject constructor(
                         post(createItemHandler)
                         patch(popItemHandler)
                     }
+                }
+            }
+            route("items") {
+                route("{itemId}") {
+                    delete(deleteItemHandler)
                 }
             }
         }

@@ -128,4 +128,17 @@ object HttpPrioritizerClient : PrioritizerApi {
             ?.takeIf(JsonObject::isNotEmpty)
             ?.let(itemSerializer::fromJson)
 
+    override suspend fun deleteItem(
+        itemId: String
+    ): Item? =
+        client.delete("$apiUrl/items/$itemId")
+            .takeIf { httpResponse: HttpResponse ->
+                httpResponse.status == HttpStatusCode.OK
+            }
+            ?.let { httpResponse: HttpResponse ->
+                httpResponse.body<JsonObject>()
+            }
+            ?.takeIf(JsonObject::isNotEmpty)
+            ?.let(itemSerializer::fromJson)
+
 }

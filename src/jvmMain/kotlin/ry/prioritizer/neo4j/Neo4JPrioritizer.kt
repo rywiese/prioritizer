@@ -10,6 +10,7 @@ import org.neo4j.driver.async.AsyncTransaction
 import ry.prioritizer.neo4j.Neo4JQueries.createCategory
 import ry.prioritizer.neo4j.Neo4JQueries.createItem
 import ry.prioritizer.neo4j.Neo4JQueries.deleteCategory
+import ry.prioritizer.neo4j.Neo4JQueries.deleteItem
 import ry.prioritizer.neo4j.Neo4JQueries.getRoot
 import ry.prioritizer.neo4j.Neo4JQueries.getTree
 import ry.prioritizer.neo4j.Neo4JQueries.popItem
@@ -70,6 +71,13 @@ class Neo4JPrioritizer @Inject constructor(
     ): Item? =
         neo4jDriver.asyncSession().writeTransactionSuspend { transaction: AsyncTransaction ->
             transaction.popItem(categoryId)
+        }
+
+    override suspend fun deleteItem(
+        itemId: String
+    ): Item? =
+        neo4jDriver.asyncSession().writeTransactionSuspend { transaction: AsyncTransaction ->
+            transaction.deleteItem(itemId)
         }
 
 }

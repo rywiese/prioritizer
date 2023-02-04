@@ -11,11 +11,13 @@ import model.Item
 import react.FC
 import react.Props
 import react.css.css
+import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 
 external interface QueueProps : Props {
     var items: List<Item>
     var createItem: (CreateItemRequest) -> Unit
+    var deleteItem: (Item) -> Unit
 }
 
 val Queue = FC { props: QueueProps ->
@@ -34,6 +36,12 @@ val Queue = FC { props: QueueProps ->
                 }
                 Item {
                     item = itemProp
+                }
+                button {
+                    +"Delete"
+                    onClick = {
+                        props.deleteItem(itemProp)
+                    }
                 }
             }
         } ?: div { +"Nothing here yet!" }
