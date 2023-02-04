@@ -23,7 +23,7 @@ val Top = FC { props: TopProps ->
     var statefulGrandparent: Category? by useState(null)
     var statefulParent: Category? by useState(null)
     var statefulCategory: Category? by useState(null)
-    var statefulQueue: List<Item> by useState(mutableListOf())
+    var statefulQueue: List<Item> by useState(emptyList())
     var statefulChildren: Set<Tree> by useState(emptySet())
     useEffectOnce {
         mainScope.launch {
@@ -80,6 +80,20 @@ val Top = FC { props: TopProps ->
                         .createItem(categoryId, createItemRequest)
                         ?.also { item: Item ->
                             statefulQueue = statefulQueue + item
+                        }
+                }
+            }
+            deleteItem = { item: Item ->
+                mainScope.launch {
+                    props.api
+                        .deleteItem(item.id)
+                        ?.let { deletedItem: Item ->
+                            statefulQueue.find {
+                                it.id == deletedItem.id
+                            }
+                        }
+                        ?.also { deletedQueueReference: Item ->
+                            statefulQueue = statefulQueue - deletedQueueReference
                         }
                 }
             }
