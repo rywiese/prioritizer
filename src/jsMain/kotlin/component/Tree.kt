@@ -1,18 +1,18 @@
 package component
 
-import csstype.Display
-import csstype.FlexDirection
-import csstype.FlexGrow
-import csstype.TextAlign
-import csstype.vh
+import emotion.react.css
 import http.CreateItemRequest
 import model.Category
 import model.Item
 import model.Tree
 import react.FC
 import react.Props
-import react.css.css
 import react.dom.html.ReactHTML.div
+import web.cssom.Display
+import web.cssom.FlexDirection
+import web.cssom.TextAlign
+import web.cssom.number
+import web.cssom.vh
 
 external interface TreeProps : Props {
     var parent: Category?
@@ -37,7 +37,7 @@ val Tree = FC { props: TreeProps ->
         }
         div {
             css {
-                flexGrow = FlexGrow(1.0)
+                flexGrow = number(1.0)
             }
             props.parent?.let { parent: Category ->
                 Parent {
@@ -53,7 +53,7 @@ val Tree = FC { props: TreeProps ->
         }
         div {
             css {
-                flexGrow = FlexGrow(4.0)
+                flexGrow = number(4.0)
             }
             +props.category.name
             Queue {
@@ -69,7 +69,7 @@ val Tree = FC { props: TreeProps ->
         }
         div {
             css {
-                flexGrow = FlexGrow(1.0)
+                flexGrow = number(1.0)
             }
             Children {
                 children = props.children

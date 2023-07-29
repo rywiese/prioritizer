@@ -1,10 +1,22 @@
-val ktorVersion = "2.1.3"
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+
+val coroutinesVersion = "1.7.3"
+val daggerVersion = "2.47"
+val kotlinWrappersVersion = "1.0.0-pre.602"
+val ktorVersion = "2.3.2"
+val neo4jVersion = "4.4.9"
+val openApiVersion = "6.2.1"
+
+fun kotlinw(target: String): String = "org.jetbrains.kotlin-wrappers:kotlin-$target"
 
 plugins {
-    kotlin("multiplatform") version "1.6.21"
-    kotlin("plugin.serialization") version "1.6.21"
-    kotlin("kapt") version "1.7.20"
-    id("org.openapi.generator") version "6.2.1"
+    val kotlinVersion = "1.9.0"
+    val openApiGeneratorVersion = "6.2.1"
+    kotlin("multiplatform") version kotlinVersion
+    kotlin("plugin.serialization") version kotlinVersion
+    kotlin("kapt") version kotlinVersion
+    id("org.openapi.generator") version openApiGeneratorVersion
     application
 }
 
@@ -12,7 +24,6 @@ group = "ry"
 version = "1.0-SNAPSHOT"
 
 repositories {
-    jcenter()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }
@@ -20,19 +31,21 @@ repositories {
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "17"
         }
         withJava()
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
         }
     }
-    js(LEGACY) {
+    js(IR) {
         binaries.executable()
         browser {
-            commonWebpackConfig {
-                cssSupport.enabled = true
-            }
+            commonWebpackConfig(Action {
+                cssSupport {
+                    enabled.set(true)
+                }
+            })
         }
     }
     sourceSets {
@@ -48,33 +61,33 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("com.google.dagger:dagger:2.44")
+                implementation("com.google.dagger:dagger:$daggerVersion")
                 configurations["kapt"].dependencies.add(
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
                         "com.google.dagger",
                         "dagger-compiler",
-                        "2.44"
+                        daggerVersion
                     )
                 )
                 implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
                 implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
                 implementation("io.ktor:ktor-server-netty:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
-                implementation("org.neo4j.driver:neo4j-java-driver:4.4.9")
-                implementation("org.openapitools:openapi-generator-gradle-plugin:6.2.1")
+                implementation("org.neo4j.driver:neo4j-java-driver:$neo4jVersion")
+                implementation("org.openapitools:openapi-generator-gradle-plugin:$openApiVersion")
             }
         }
         val jvmTest by getting
         val jsMain by getting {
             dependencies {
+                implementation(enforcedPlatform(kotlinw("wrappers-bom:$kotlinWrappersVersion")))
+                implementation(kotlinw("emotion"))
+                implementation(kotlinw("react"))
+                implementation(kotlinw("react-dom"))
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.290-kotlin-1.6.10")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.290-kotlin-1.6.10")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-css:17.0.2-pre.290-kotlin-1.6.10")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
         val jsTest by getting
@@ -105,4 +118,11 @@ openApiValidate {
 openApiGenerate {
     inputSpec.set(openApiInputSpec)
     generatorName.set("kotlin")
+}
+
+rootProject.plugins.withType(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin::class.java) {
+    // Failing on the yarn lock is a no-go as long as `./gradlew kotlinUpgradeYarnLock` fails with 139
+    rootProject.the<YarnRootExtension>().yarnLockMismatchReport = YarnLockMismatchReport.WARNING // NONE | FAIL
+    rootProject.the<YarnRootExtension>().reportNewYarnLock = false
+    rootProject.the<YarnRootExtension>().yarnLockAutoReplace = true
 }

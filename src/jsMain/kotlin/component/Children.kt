@@ -1,17 +1,17 @@
 package component
 
-import csstype.Display
-import csstype.FlexDirection
-import csstype.FlexGrow
-import csstype.JustifyContent
-import csstype.pct
-import csstype.px
+import emotion.react.css
 import model.Category
 import model.Tree
 import react.FC
 import react.Props
-import react.css.css
 import react.dom.html.ReactHTML.div
+import web.cssom.Display
+import web.cssom.FlexDirection
+import web.cssom.JustifyContent
+import web.cssom.number
+import web.cssom.pct
+import web.cssom.px
 
 external interface ChildrenProps : Props {
     var children: Set<Tree>
@@ -31,7 +31,7 @@ val Children = FC { props: ChildrenProps ->
         props.children.map { child: Tree ->
             div {
                 css {
-                    flexGrow = FlexGrow(1.0)
+                    flexGrow = number(1.0)
                     padding = 25.px
                 }
                 Child {
@@ -44,7 +44,7 @@ val Children = FC { props: ChildrenProps ->
         }
         div {
             css {
-                flexGrow = FlexGrow(1.0)
+                flexGrow = number(1.0)
                 padding = 25.px
             }
             CreateCategoryButton {

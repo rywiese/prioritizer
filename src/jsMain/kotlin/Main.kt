@@ -1,15 +1,14 @@
 import client.HttpPrioritizerClient
 import component.Top
-import kotlinx.browser.document
 import react.create
-import react.dom.render
+import react.dom.client.createRoot
+import web.dom.document
 
 fun main() {
-    val container = document.createElement("div")
-    document.body!!.appendChild(container)
-
-    val treeComponent = Top.create {
-        api = HttpPrioritizerClient
-    }
-    render(treeComponent, container)
+    createRoot(document.getElementById("root")!!)
+        .render(
+            Top.create {
+                api = HttpPrioritizerClient
+            }
+        )
 }
