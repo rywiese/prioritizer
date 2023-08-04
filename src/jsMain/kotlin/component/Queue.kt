@@ -3,9 +3,9 @@ package component
 import emotion.react.css
 import http.CreateItemRequest
 import model.Item
+import mui.material.Button
 import react.FC
 import react.Props
-import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 import web.cssom.Display
 import web.cssom.FlexDirection
@@ -37,7 +37,7 @@ val Queue = FC { props: QueueProps ->
                 Item {
                     item = itemProp
                 }
-                button {
+                Button {
                     +"Delete"
                     onClick = {
                         props.deleteItem(itemProp)

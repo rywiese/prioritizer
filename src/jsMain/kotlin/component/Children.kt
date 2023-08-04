@@ -1,17 +1,15 @@
 package component
 
-import emotion.react.css
 import model.Category
 import model.Tree
+import mui.material.Divider
+import mui.material.DividerVariant
+import mui.material.Stack
+import mui.system.responsive
+import mui.system.sx
 import react.FC
 import react.Props
-import react.dom.html.ReactHTML.div
-import web.cssom.Display
-import web.cssom.FlexDirection
-import web.cssom.JustifyContent
-import web.cssom.number
-import web.cssom.pct
-import web.cssom.px
+import web.cssom.AlignItems
 
 external interface ChildrenProps : Props {
     var children: Set<Tree>
@@ -21,34 +19,18 @@ external interface ChildrenProps : Props {
 }
 
 val Children = FC { props: ChildrenProps ->
-    div {
-        css {
-            display = Display.flex
-            flexDirection = FlexDirection.column
-            justifyContent = JustifyContent.center
-            height = 100.pct
+    Stack {
+        sx {
+            alignItems = AlignItems.center
         }
+        useFlexGap = true
+        spacing = responsive(10)
         props.children.map { child: Tree ->
-            div {
-                css {
-                    flexGrow = number(1.0)
-                    padding = 25.px
-                }
-                Child {
-                    category = child.category
-                    firstItemOrNull = child.queue.firstOrNull()
-                    onClick = { props.onClickChild(child) }
-                    deleteCategory = props.deleteCategory
-                }
-            }
-        }
-        div {
-            css {
-                flexGrow = number(1.0)
-                padding = 25.px
-            }
-            CreateCategoryButton {
-                createCategory = props.createSubcategory
+            Child {
+                category = child.category
+                firstItemOrNull = child.queue.firstOrNull()
+                onClick = { props.onClickChild(child) }
+                deleteCategory = props.deleteCategory
             }
         }
     }

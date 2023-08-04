@@ -2,16 +2,16 @@ package component
 
 import http.CreateItemRequest
 import kotlinx.browser.window
+import mui.material.Button
 import react.FC
 import react.Props
-import react.dom.html.ReactHTML.button
 
 external interface CreateItemButtonProps : Props {
     var createItem: (CreateItemRequest) -> Unit
 }
 
 val CreateItemButton = FC { props: CreateItemButtonProps ->
-    button {
+    Button {
         +"Create new item"
         onClick = {
             window.prompt("Enter item name")?.let { name: String ->
