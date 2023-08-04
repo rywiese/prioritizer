@@ -2,11 +2,10 @@ package component
 
 import model.Category
 import model.Tree
-import mui.material.Divider
-import mui.material.DividerVariant
 import mui.material.Stack
 import mui.system.responsive
 import mui.system.sx
+import organisms.Subcategory
 import react.FC
 import react.Props
 import web.cssom.AlignItems
@@ -26,9 +25,9 @@ val Children = FC { props: ChildrenProps ->
         useFlexGap = true
         spacing = responsive(10)
         props.children.map { child: Tree ->
-            Child {
+            Subcategory {
                 category = child.category
-                firstItemOrNull = child.queue.firstOrNull()
+                queue = child.queue
                 onClick = { props.onClickChild(child) }
                 deleteCategory = props.deleteCategory
             }

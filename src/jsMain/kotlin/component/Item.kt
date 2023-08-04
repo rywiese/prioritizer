@@ -24,7 +24,6 @@ val Item = FC { props: ItemProps ->
         }
         //variant = PaperVariant.outlined
         CardContent {
-            // TODO Typography {}
             Typography {
                 +"Name: ${props.item.name}"
             }
