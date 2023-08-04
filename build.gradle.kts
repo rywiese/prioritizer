@@ -82,6 +82,8 @@ kotlin {
             dependencies {
                 implementation(enforcedPlatform(kotlinw("wrappers-bom:$kotlinWrappersVersion")))
                 implementation(kotlinw("emotion"))
+                implementation(kotlinw("mui"))
+                implementation(kotlinw("mui-icons"))
                 implementation(kotlinw("react"))
                 implementation(kotlinw("react-dom"))
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")

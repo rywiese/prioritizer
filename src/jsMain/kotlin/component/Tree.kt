@@ -1,18 +1,15 @@
 package component
 
-import emotion.react.css
 import http.CreateItemRequest
 import model.Category
 import model.Item
 import model.Tree
+import mui.material.Container
+import mui.material.Stack
+import mui.material.StackDirection
+import mui.system.responsive
 import react.FC
 import react.Props
-import react.dom.html.ReactHTML.div
-import web.cssom.Display
-import web.cssom.FlexDirection
-import web.cssom.TextAlign
-import web.cssom.number
-import web.cssom.vh
 
 external interface TreeProps : Props {
     var parent: Category?
@@ -28,17 +25,9 @@ external interface TreeProps : Props {
 }
 
 val Tree = FC { props: TreeProps ->
-    div {
-        css {
-            display = Display.flex
-            flexDirection = FlexDirection.row
-            height = 100.vh
-            textAlign = TextAlign.center
-        }
-        div {
-            css {
-                flexGrow = number(1.0)
-            }
+    Stack {
+        direction = responsive(StackDirection.row)
+        Container {
             props.parent?.let { parent: Category ->
                 Parent {
                     name = parent.name
@@ -48,14 +37,11 @@ val Tree = FC { props: TreeProps ->
                 }
             } ?: Parent {
                 name = "Root"
+                disabled = true
                 onClick = { }
             }
         }
-        div {
-            css {
-                flexGrow = number(4.0)
-            }
-            +props.category.name
+        Container {
             Queue {
                 items = props.queue
                 createItem = { createItemRequest: CreateItemRequest ->
@@ -67,10 +53,7 @@ val Tree = FC { props: TreeProps ->
                 deleteItem = props.deleteItem
             }
         }
-        div {
-            css {
-                flexGrow = number(1.0)
-            }
+        Container {
             Children {
                 children = props.children
                 onClickChild = props.onClickChild

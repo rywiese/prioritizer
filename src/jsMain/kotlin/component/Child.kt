@@ -2,9 +2,13 @@ package component
 
 import model.Category
 import model.Item
+import mui.icons.material.SubdirectoryArrowRight
+import mui.material.Button
+import mui.material.Container
+import mui.material.IconButton
+import mui.material.Typography
 import react.FC
 import react.Props
-import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 
 external interface ChildProps : Props {
@@ -15,19 +19,25 @@ external interface ChildProps : Props {
 }
 
 val Child = FC { props: ChildProps ->
-    div {
-        +props.category.name
-        onClick = { props.onClick() }
-    }
-    props.firstItemOrNull?.let { firstItem: Item ->
-        Item {
-            item = firstItem
+    Container {
+        Typography {
+            +props.category.name
         }
-    } ?: div { +"Empty!" }
-    button {
-        +"Delete"
-        onClick = {
-            props.deleteCategory(props.category)
+        props.firstItemOrNull?.let { firstItem: Item ->
+            Item {
+                item = firstItem
+            }
+        } ?: div { +"Empty!" }
+        Button {
+            +"Delete"
+            onClick = {
+                props.deleteCategory(props.category)
+            }
+        }
+        IconButton {
+            SubdirectoryArrowRight {
+                onClick = { props.onClick() }
+            }
         }
     }
 }
