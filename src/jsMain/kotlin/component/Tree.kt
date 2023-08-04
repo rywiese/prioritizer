@@ -8,8 +8,12 @@ import mui.material.Container
 import mui.material.Stack
 import mui.material.StackDirection
 import mui.system.responsive
+import mui.system.sx
+import organisms.Subcategory
 import react.FC
 import react.Props
+import web.cssom.AlignItems
+import web.cssom.px
 
 external interface TreeProps : Props {
     var parent: Category?
@@ -53,17 +57,20 @@ val Tree = FC { props: TreeProps ->
                 deleteItem = props.deleteItem
             }
         }
-        Container {
-            Children {
-                children = props.children
-                onClickChild = props.onClickChild
-                createSubcategory = { subCategoryName: String ->
-                    props.createSubcategory(
-                        props.category.id,
-                        subCategoryName
-                    )
+        Stack {
+            sx {
+                alignItems = AlignItems.center
+                padding = 36.px
+            }
+            useFlexGap = true
+            spacing = responsive(10)
+            props.children.map { child: Tree ->
+                Subcategory {
+                    category = child.category
+                    queue = child.queue
+                    onClick = { props.onClickChild(child) }
+                    deleteCategory = props.deleteCategory
                 }
-                deleteCategory = props.deleteCategory
             }
         }
     }

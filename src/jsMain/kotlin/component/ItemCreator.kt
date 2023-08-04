@@ -10,6 +10,7 @@ external interface CreateItemButtonProps : Props {
     var createItem: (CreateItemRequest) -> Unit
 }
 
+// TODO: Make this an icon
 val CreateItemButton = FC { props: CreateItemButtonProps ->
     Button {
         +"Create new item"

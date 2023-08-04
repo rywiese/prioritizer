@@ -6,6 +6,8 @@ import molecules.CompactItemCard
 import mui.icons.material.Delete
 import mui.icons.material.Edit
 import mui.icons.material.SubdirectoryArrowRight
+import mui.material.Card
+import mui.material.CardContent
 import mui.material.Container
 import mui.material.Divider
 import mui.material.IconButton
@@ -23,6 +25,7 @@ import react.Props
 import web.cssom.Auto
 import web.cssom.Display
 import web.cssom.FlexDirection
+import web.cssom.pct
 import web.cssom.px
 import kotlin.math.max
 
@@ -34,9 +37,12 @@ external interface ChildProps : Props {
 }
 
 val Subcategory = FC { props: ChildProps ->
-    Container {
-        Paper {
-            variant = PaperVariant.elevation
+    Card {
+        sx {
+            width = 100.pct
+        }
+        raised = true
+        CardContent {
             Toolbar {
                 sx {
                     display = Display.flex
