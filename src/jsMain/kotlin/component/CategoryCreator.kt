@@ -9,6 +9,7 @@ external interface CreateCategoryButtonProps : Props {
     var createCategory: (categoryName: String) -> Unit
 }
 
+// TODO: Make this an icon
 val CreateCategoryButton = FC { props: CreateCategoryButtonProps ->
     Button {
         +"Create new category"
